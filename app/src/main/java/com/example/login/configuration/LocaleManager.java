@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import java.util.Locale;
 
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
+import static android.os.Build.VERSION_CODES.N;
 
 public class LocaleManager {
     public static final  String LANGUAGE_ENGLISH   = "en";
@@ -59,8 +61,10 @@ public class LocaleManager {
         return context;
     }
 //
-//    public static Locale getLocale(Resources res) {
-//        Configuration config = res.getConfiguration();
-//        return FileUtils.isAtLeastVersion(N) ? config.getLocales().get(0) : config.locale;
-//    }
+    public static Locale getLocale(Resources res) {
+        Configuration config = res.getConfiguration();
+
+            return FileUtils.isAtLeastVersion(N) ? config.getLocales().get(0) : config.locale;
+
+    }
 }

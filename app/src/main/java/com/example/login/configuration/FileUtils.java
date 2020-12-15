@@ -21,66 +21,7 @@ class FileUtils {
     public FileUtils(Context mContext) {
         this.mContext = mContext;
     }
-
-//    public void openPDF(File file) {
-//        if (Build.VERSION.SDK_INT >= 24) {
-//            try {
-//                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-//                m.invoke(null);
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Uri path = Uri.fromFile(file);
-//        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
-//        pdfIntent.setDataAndType(path, "application/pdf");
-//        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        try {
-//            mContext.startActivity(pdfIntent);
-//        } catch(ActivityNotFoundException e) {
-//            Toast.makeText(mContext, mContext.getString(R.string.NO_SUPPORT_PDF_ERROR), Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-//    public void openExcel(File file) {
-//        if (Build.VERSION.SDK_INT >= 24) {
-//            try {
-//                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-//                m.invoke(null);
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Uri path = Uri.fromFile(file);
-//        Intent excelIntent = new Intent(Intent.ACTION_VIEW);
-//        excelIntent.setDataAndType(path, "application/vnd.ms-excel");
-//        excelIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        try {
-//            mContext.startActivity(excelIntent);
-//        } catch(ActivityNotFoundException e) {
-//            Toast.makeText(mContext, mContext.getString(R.string.NO_SUPPORT_EXCEL_ERROR), Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    public void openWord(File file) {
-//        if (Build.VERSION.SDK_INT >= 24) {
-//            try {
-//                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-//                m.invoke(null);
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        Uri path = Uri.fromFile(file);
-//        Intent wordIntent = new Intent(Intent.ACTION_VIEW);
-//        wordIntent.setDataAndType(path, "application/msword");
-//        wordIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        try {
-//            mContext.startActivity(wordIntent);
-//        } catch(ActivityNotFoundException e) {
-//            Toast.makeText(mContext, mContext.getString(R.string.NO_SUPPORT_WORD_ERROR), Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    
 
     public File writeResponseBodyToDisk(ResponseBody body, String filename) {
         try {

@@ -14,6 +14,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     buildTypes {
@@ -46,6 +51,8 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
 }
 apply plugin: 'realm-android'

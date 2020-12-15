@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">Login</string>
     <string name="str_ERROR_DIALOG">Có lỗi xảy ra!\nVui lòng thử lại sau!</string>
+
+    <string name="PROCESSING_REQUEST">Đang xử lý yêu cầu</string>
     <string name="str_vn">Tiếng Việt</string>
+    <string name="USERNAME_REQUIRED">Bạn chưa nhập Username</string>
+    <string name="USERNAME_INVALID_LENGTH">Username chỉ được nhập không quá 100 ký tự</string>
+    <string name="PASSWORD_REQUIRED">Bạn chưa nhập Mật khẩu</string>
+    <string name="PASSWORD_INVALID_LENGTH">Password ít nhất phải dài 8 ký tự</string>
+    <string name="NETWORK_TITLE_ERROR">LỖI MẠNG</string>
+    <string name="NO_INTERNET_ERROR">Không có kết nối Mạng\nVui lòng kết nối và thử lại</string>
+
+
+    <string name="str_language">Chọn ngôn ngữ</string>
+
+    <string name="str_en">Tiếng Anh</string>
+    <string name="str_ls">Tiếng Lào</string>
+    <string name="CLOSE_BUTTON">Đóng lại</string>
+    <string name="LOGIN_TITLE_ERROR">LỖI ĐĂNG NHẬP</string>
+    <string name="LOGIN_INVALID">Thông tin đăng nhập không chính xác</string>
 </resources>
