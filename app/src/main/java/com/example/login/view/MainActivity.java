@@ -1,8 +1,10 @@
-package com.example.login;
+package com.example.login.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.login.R;
 
 public class MainActivity extends AppCompatActivity {
 

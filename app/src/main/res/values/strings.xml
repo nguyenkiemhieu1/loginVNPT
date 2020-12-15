@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Login</string>
+    <string name="str_ERROR_DIALOG">Có lỗi xảy ra!\nVui lòng thử lại sau!</string>
+    <string name="str_vn">Tiếng Việt</string>
 </resources>
