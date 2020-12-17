@@ -22,7 +22,8 @@ public class LocaleManager {
     private final SharedPreferences prefs;
 
     public LocaleManager(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
     }
 
     public Context setLocale(Context c) {
@@ -61,10 +62,10 @@ public class LocaleManager {
         return context;
     }
 //
-    public static Locale getLocale(Resources res) {
-        Configuration config = res.getConfiguration();
-
-            return FileUtils.isAtLeastVersion(N) ? config.getLocales().get(0) : config.locale;
-
-    }
+//    public static Locale getLocale(Resources res) {
+//        Configuration config = res.getConfiguration();
+//
+//            return FileUtils.isAtLeastVersion(N) ? config.getLocales().get(0) : config.locale;
+//
+//    }
 }

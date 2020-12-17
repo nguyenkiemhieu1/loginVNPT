@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.login.R;
 import com.example.login.configuration.Application;
+import com.example.login.configuration.LocaleManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,8 +33,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this,
-                MainActivity.class));
+//        Thread.setDefaultUncaughtExceptionHandler(new MyExceptionHandler(this,
+//                MainActivity.class));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initProgressDialog();
     }
@@ -74,10 +75,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
-//        progressDialog.stopThread();
-//        if (progressDialog != null && progressDialog.getProgressDialog().isShowing()) {
-//            progressDialog.getProgressDialog().dismiss();
-//        }
         super.onStop();
     }
 

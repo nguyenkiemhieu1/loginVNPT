@@ -27,8 +27,7 @@ public class Application extends android.app.Application {
         private String baseAPIUrl;
         @Getter
         private String baseAPISigningUrl;
-        @Getter
-        private String cert;
+
         @Getter
         private String keyStorePassword;
         public static Resources resources;
@@ -56,7 +55,6 @@ public class Application extends android.app.Application {
             app = this;
             resources = getResources();
             appPrefs = new ApplicationSharedPreferences(this);
-            typeface = Typeface.createFromAsset(getAssets(), "arial.ttf");
             countFunction = 15;
             timeSync = 180000;
             baseAPIUrl = "https://dev-vpdt.vnptioffice.vn/qlvb/";

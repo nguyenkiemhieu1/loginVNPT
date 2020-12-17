@@ -69,61 +69,61 @@ public class AlertDialogManager {
 
 
     }
-    public static void showAlertDialogInternet(Context context, String title, String message, Boolean status, int type) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(context);
-        }
-        alertDialog = builder.create();
-        alertDialog.getWindow().setDimAmount(0.5f);
-
-        // Setting Dialog Title
-        alertDialog.setTitle(title);
-
-        // Setting Dialog Message
-        alertDialog.setMessage(message);
-
-        if (status != null) {
-            // Setting alert dialog icon
-            switch (type) {
-                case SUCCESS:
-                    alertDialog.setIcon(R.drawable.success);
-                    break;
-                case ERROR:
-                    alertDialog.setIcon(R.drawable.error);
-                    break;
-                case WARNING:
-                    alertDialog.setIcon(R.drawable.warning);
-                    break;
-                case INFO:
-                    alertDialog.setIcon(R.drawable.info);
-                    break;
-            }
-        }
-        alertDialog.setButton(context.getString(R.string.CLOSE_BUTTON), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        alertDialog.setCancelable(false);
-        // Showing Alert Message
-        if (!alertDialog.isShowing()) {
-            alertDialog.show();
-        }
-
-
-    }
-    public static void setCancelable(boolean i)
-    {  if (alertDialog != null && !alertDialog.isShowing()) {
-        alertDialog.setCancelable(i);
-    }
-    }
-
-    public static void dismisAlertDialog() {
-        if (alertDialog != null && alertDialog.isShowing()) {
-            alertDialog.dismiss();
-        }
-    }
+//    public static void showAlertDialogInternet(Context context, String title, String message, Boolean status, int type) {
+//        AlertDialog.Builder builder;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert);
+//        } else {
+//            builder = new AlertDialog.Builder(context);
+//        }
+//        alertDialog = builder.create();
+//        alertDialog.getWindow().setDimAmount(0.5f);
+//
+//        // Setting Dialog Title
+//        alertDialog.setTitle(title);
+//
+//        // Setting Dialog Message
+//        alertDialog.setMessage(message);
+//
+//        if (status != null) {
+//            // Setting alert dialog icon
+//            switch (type) {
+//                case SUCCESS:
+//                    alertDialog.setIcon(R.drawable.success);
+//                    break;
+//                case ERROR:
+//                    alertDialog.setIcon(R.drawable.error);
+//                    break;
+//                case WARNING:
+//                    alertDialog.setIcon(R.drawable.warning);
+//                    break;
+//                case INFO:
+//                    alertDialog.setIcon(R.drawable.info);
+//                    break;
+//            }
+//        }
+//        alertDialog.setButton(context.getString(R.string.CLOSE_BUTTON), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//        alertDialog.setCancelable(false);
+//        // Showing Alert Message
+//        if (!alertDialog.isShowing()) {
+//            alertDialog.show();
+//        }
+//
+//
+//    }
+//    public static void setCancelable(boolean i)
+//    {  if (alertDialog != null && !alertDialog.isShowing()) {
+//        alertDialog.setCancelable(i);
+//    }
+//    }
+//
+//    public static void dismisAlertDialog() {
+//        if (alertDialog != null && alertDialog.isShowing()) {
+//            alertDialog.dismiss();
+//        }
+//    }
 
 }

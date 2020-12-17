@@ -21,10 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.login.BuildConfig;
 import com.example.login.R;
 import com.example.login.common.ConnectionDetector;
-import com.example.login.common.Constants;
+
 import com.example.login.configuration.AlertDialogManager;
 import com.example.login.configuration.Application;
 import com.example.login.configuration.ApplicationSharedPreferences;
@@ -35,27 +34,29 @@ import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ExceptionRequest;
 import com.example.login.presenter.ILoginPresenter;
 import com.example.login.presenter.LoginPresenterImpl;
-import com.example.login.presenter.Version.CheckVersionRequest;
-import com.example.login.presenter.Version.IVersionPresenter;
-import com.example.login.presenter.Version.VersionPresenterImpl;
+
 import com.example.login.presenter.loginView.ILoginView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
+
+
+import java.util.List;
 
 import butterknife.BindView;
-import io.realm.Realm;
+import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity implements ILoginView {
+public class MainActivity extends BaseActivity implements ILoginView, Validator.ValidationListener {
     private ApplicationSharedPreferences appPrefs;
-    private boolean isValidateLogin;
-    private ILoginPresenter loginPresenter = new LoginPresenterImpl(this);
-    private Realm realm;
 
+    private ILoginPresenter loginPresenter = new LoginPresenterImpl(this);
+    private boolean isValidateLogin;
+    private Validator validator;
 
     @BindView(R.id.tv_language)
     TextView tv_language;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity implements ILoginView {
     @NotEmpty(messageResId = R.string.USERNAME_REQUIRED)
     @Length(max = 100, messageResId = R.string.USERNAME_INVALID_LENGTH)
     @BindView(R.id.txtUserName)
-    //@Pattern(regex = StringDef.USERNAME_PATTERN, messageResId = R.string.USERNAME_INVALID_STRENGTH)
+
             EditText txtUsername;
     @NotEmpty(messageResId = R.string.PASSWORD_REQUIRED)
     @Length(min = 8, messageResId = R.string.PASSWORD_INVALID_LENGTH)
@@ -110,7 +111,38 @@ public class MainActivity extends BaseActivity implements ILoginView {
             }
         }
         String nameDevice = getDeviceName();
+        validator = new Validator(this);
+        validator.setValidationListener(this);
         appPrefs.setDeviceName(nameDevice);
+    }
+    @OnClick({R.id.btn_login, R.id.tv_language, R.id.image_language})
+    public void clickEvent(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                if (connectionDetector.isConnectingToInternet()) {
+                    validator.validate();
+                    if (isValidateLogin) {
+                        loginPresenter.loginPresenter(new LoginRequest(txtUsername.getText().toString(),
+                                        txtPassword.getText().toString(),
+                                        appPrefs.getFirebaseToken(),
+                                        "ANDROID",
+                                        appPrefs.getDeviceName(),
+                                        language
+                                )
+                        );
+                    }
+                } else {
+                    AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+                }
+                break;
+            case R.id.tv_language:
+                dialogLanguage();
+                break;
+            case R.id.image_language:
+                dialogLanguage();
+                break;
+
+        }
     }
 
     public static String getDeviceName() {
@@ -120,37 +152,6 @@ public class MainActivity extends BaseActivity implements ILoginView {
             return model;
         }
         return manufacturer + " " + model;
-    }
-
-    @SuppressLint("NewApi")
-    private void checkNgonNgu() {
-
-        String lang_local = Application.localeManager.getLanguage();
-        if (lang_local != null) {
-            switch (lang_local) {
-                case "vi":
-                    tv_language.setText(getString(R.string.str_vn));
-                    image_language.setImageDrawable(getResources().getDrawable(R.drawable.icon_language_vn));
-                    break;
-                case "en":
-                    tv_language.setText(getString(R.string.str_en));
-                    image_language.setImageDrawable(getResources().getDrawable(R.drawable.icon_language_en));
-                    break;
-                case "lo":
-                    tv_language.setText(getString(R.string.str_ls));
-                    image_language.setImageDrawable(getResources().getDrawable(R.drawable.icon_language_ls));
-                    break;
-                default:
-                    tv_language.setText(getString(R.string.str_vn));
-                    image_language.setImageDrawable(getResources().getDrawable(R.drawable.icon_language_vn));
-                    break;
-            }
-        } else {
-            tv_language.setText(getString(R.string.str_vn));
-            image_language.setImageDrawable(getResources().getDrawable(R.drawable.icon_language_vn));
-        }
-
-
     }
 
     private void dialogLanguage() {
@@ -212,28 +213,6 @@ public class MainActivity extends BaseActivity implements ILoginView {
 //        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
-    private void setFont() {
-        txtname1.setTypeface(Application.getApp().getTypeface());
-        txtname2.setTypeface(Application.getApp().getTypeface());
-        etUserLayout.setTypeface(Application.getApp().getTypeface());
-        etPasswordLayout.setTypeface(Application.getApp().getTypeface());
-        txtUsername.setTypeface(Application.getApp().getTypeface());
-
-        btnDangNhap.setTypeface(Application.getApp().getTypeface());
-        layoutDisplay.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                try {
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                return false;
-            }
-        });
-    }
-
 
     @Override
     public void onSuccessLogin(LoginInfo loginInfo) {
@@ -250,11 +229,6 @@ public class MainActivity extends BaseActivity implements ILoginView {
         appPrefs.setUnitUser(loginInfo.getUnitId());
         appPrefs.setAccountLogin(loginInfo);
         EventBus.getDefault().postSticky(loginInfo);
-//        if (connectionDetector.isConnectingToInternet()) {
-//            versionPresenter.checkVersion(new CheckVersionRequest("android", BuildConfig.VERSION_NAME));
-//        } else {
-//            Toast.makeText(this, getString(R.string.NETWORK_TITLE_ERROR) + " + " + getString(R.string.NO_INTERNET_ERROR), Toast.LENGTH_LONG).show();
-//        }
     }
 
     @Override
@@ -295,6 +269,16 @@ public class MainActivity extends BaseActivity implements ILoginView {
             exceptionRequest.setFunction("");
         }
         exceptionRequest.setException(apiError.getMessage());
+
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
 
     }
 }
