@@ -21,7 +21,7 @@ public class LoginPresenterImpl implements ILoginPresenter, ICallFinishedListene
         this.loginDao = new LoginDao();
     }
 
-    @Override
+  @Override
     public void getUserLoginPresenter(LoginRequest loginRequest) {
         if (loginView != null) {
             loginDao.onSendLoginDao(loginRequest, this);

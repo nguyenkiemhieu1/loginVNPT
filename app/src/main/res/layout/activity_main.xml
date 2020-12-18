@@ -118,10 +118,9 @@
             android:drawablePadding="@dimen/_8dp"
             android:drawableTint="@color/md_white"
             android:fontFamily="sans-serif"
-            android:hint="Nhập mất khâuue"
+            android:hint="Nhập mật khẩu"
             android:inputType="textPassword"
             android:paddingStart="@dimen/_8dp"
-            android:textColor="@color/md_white"
             android:textColorHint="@color/md_white"
             android:textSize="@dimen/_16sp" />
     </com.google.android.material.textfield.TextInputLayout>

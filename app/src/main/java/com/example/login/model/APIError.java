@@ -9,5 +9,6 @@ public class APIError {
     @Getter
     @Setter
     private int code;
-    @Getter @Setter private String message;
+    @Getter @Setter
+    private String message;
 }

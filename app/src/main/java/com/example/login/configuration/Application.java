@@ -58,7 +58,6 @@ public class Application extends android.app.Application {
             countFunction = 15;
             timeSync = 180000;
             baseAPIUrl = "https://dev-vpdt.vnptioffice.vn/qlvb/";
-//        baseAPIUrl = "https://beta-vpdt.vnptioffice.vn/qlvb_dichvu/";
             baseAPISigningUrl = "http://123.30.60.210:80";
             keyStorePassword = "qlvbdhcaobangpassword";
                 Realm.init(this);

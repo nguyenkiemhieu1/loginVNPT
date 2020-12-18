@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -60,13 +61,14 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
 
     @BindView(R.id.tv_language)
     TextView tv_language;
+
     @BindView(R.id.image_language)
     ImageView image_language;
+
     @NotEmpty(messageResId = R.string.USERNAME_REQUIRED)
     @Length(max = 100, messageResId = R.string.USERNAME_INVALID_LENGTH)
     @BindView(R.id.txtUserName)
-
-            EditText txtUsername;
+    EditText txtUsername;
     @NotEmpty(messageResId = R.string.PASSWORD_REQUIRED)
     @Length(min = 8, messageResId = R.string.PASSWORD_INVALID_LENGTH)
     @BindView(R.id.txtPassword)
@@ -74,15 +76,19 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
 
     @BindView(R.id.etUserLayout)
     TextInputLayout etUserLayout;
+
     @BindView(R.id.etPasswordLayout)
     TextInputLayout etPasswordLayout;
 
     @BindView(R.id.btn_login)
     Button btnDangNhap;
+
     @BindView(R.id.txtname2)
     TextView txtname2;
+
     @BindView(R.id.txtname1)
     TextView txtname1;
+
     @BindView(R.id.layoutDisplay)
     ConstraintLayout layoutDisplay;
 
@@ -115,13 +121,17 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
         validator.setValidationListener(this);
         appPrefs.setDeviceName(nameDevice);
     }
+
     @OnClick({R.id.btn_login, R.id.tv_language, R.id.image_language})
     public void clickEvent(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
+                Log.v("okhhh","-------------------------"+txtUsername.getText().toString());
+                Log.v("okhhh","-------------------------"+txtPassword.getText().toString());
                 if (connectionDetector.isConnectingToInternet()) {
                     validator.validate();
-                    if (isValidateLogin) {
+                    if (!isValidateLogin) {
+
                         loginPresenter.loginPresenter(new LoginRequest(txtUsername.getText().toString(),
                                         txtPassword.getText().toString(),
                                         appPrefs.getFirebaseToken(),
@@ -130,6 +140,7 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
                                         language
                                 )
                         );
+
                     }
                 } else {
                     AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
@@ -229,6 +240,7 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
         appPrefs.setUnitUser(loginInfo.getUnitId());
         appPrefs.setAccountLogin(loginInfo);
         EventBus.getDefault().postSticky(loginInfo);
+
     }
 
     @Override
@@ -274,11 +286,11 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
 
     @Override
     public void onValidationSucceeded() {
-
+        isValidateLogin = true;
     }
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
-
+        isValidateLogin = false;
     }
 }
