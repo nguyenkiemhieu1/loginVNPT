@@ -9,6 +9,7 @@
     <string name="PASSWORD_REQUIRED">Bạn chưa nhập Mật khẩu</string>
     <string name="PASSWORD_INVALID_LENGTH">Password ít nhất phải dài 8 ký tự</string>
     <string name="NETWORK_TITLE_ERROR">LỖI MẠNG</string>
+    <string name="str_dialog_thongbao"> Thông báo </string>
     <string name="NO_INTERNET_ERROR">Không có kết nối Mạng\nVui lòng kết nối và thử lại</string>
 
 

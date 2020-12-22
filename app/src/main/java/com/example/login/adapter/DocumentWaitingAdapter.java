@@ -1,32 +1,67 @@
 package com.example.login.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.R;
+import com.example.login.common.ConnectionDetector;
 import com.example.login.common.Constants;
+import com.example.login.configuration.Application;
+import com.example.login.configuration.ApplicationSharedPreferences;
+import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.LoginInfo;
+import com.example.login.presenter.DocumentWaitingDao.DocumentWaitingDao;
+import com.example.login.presenter.ExceptionCallAPIEvent;
+import com.example.login.presenter.ExceptionRequest;
+import com.example.login.presenter.ICallFinishedListener;
+import com.example.login.presenter.IExceptionErrorView;
+import com.example.login.presenter.loginDao.LoginDao;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class DocumentWaitingAdapter extends BaseAdapter {
-    private List<DocumentWaitingInfo> documentWaitingInfos;
-    private LayoutInflater layoutInflater;
+
+public class DocumentWaitingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+    private List<DocumentWaitingInfo> documentWaitingInfoList;
     private Context context;
+    public final int TYPE_NEW = 0;
     OnLoadMoreListener loadMoreListener;
-     public  DocumentWaitingAdapter(Context context, List<DocumentWaitingInfo> documentWaitingInfos){
-         this.context = context;
-         this.documentWaitingInfos = documentWaitingInfos;
-         layoutInflater = LayoutInflater.from(context);
-     }
+    boolean isLoading = false, isMoreDataAvailable = true;
+    private ApplicationSharedPreferences appPrefs;
+
+    private void sendExceptionError(APIError apiError) {
+        ExceptionRequest exceptionRequest = new ExceptionRequest();
+        LoginInfo eventbus = EventBus.getDefault().getStickyEvent(LoginInfo.class);
+        if (eventbus != null) {
+            exceptionRequest.setUserId(eventbus.getUsername());
+        } else {
+            exceptionRequest.setUserId("");
+        }
+        appPrefs = Application.getApp().getAppPrefs();
+        exceptionRequest.setDevice(appPrefs.getDeviceName());
+        ExceptionCallAPIEvent error = EventBus.getDefault().getStickyEvent(ExceptionCallAPIEvent.class);
+        if (error != null) {
+            exceptionRequest.setFunction(error.getUrlAPI());
+        } else {
+            exceptionRequest.setFunction("");
+        }
+        exceptionRequest.setException(apiError.getMessage());
+    }
+
+
     public interface OnLoadMoreListener {
         void onLoadMore();
     }
@@ -35,104 +70,176 @@ public class DocumentWaitingAdapter extends BaseAdapter {
         this.loadMoreListener = loadMoreListener;
     }
 
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_date)
+        TextView tvDate;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
+        @BindView(R.id.tv_trang_thai)
+        TextView tvTrangThai;
+        @BindView(R.id.tv_kh)
+        TextView tvKH;
+        @BindView(R.id.tv_cqbh)
+        TextView tvCQBH;
+        @BindView(R.id.tv_ngay_vb)
+        TextView tvNgayVB;
+        @BindView(R.id.tv_do_khan)
+        TextView tvDoKhan;
+        @BindView(R.id.tv_vatro_xl)
+        TextView tvVaiTro;
+        @BindView(R.id.img_file_dinh_kem)
+        ImageView imgFileDinhkem;
+        @BindView(R.id.tv_trang_thai_label)
+        TextView tvTrangThai_label;
+        @BindView(R.id.tv_kh_label)
+        TextView tvKH_label;
+        @BindView(R.id.tv_cqbh_label)
+        TextView tvCQBH_label;
+        @BindView(R.id.tv_ngay_vb_label)
+        TextView tvNgayVB_label;
+        @BindView(R.id.tv_do_khan_label)
+        TextView tvDoKhan_label;
+        @BindView(R.id.tv_vaitro_xl_label)
+        TextView tvVaiTro_XL_label;
+        @BindView(R.id.tv_file_attach_label)
+        TextView imgFileDinhkem_label;
+        private DocumentWaitingDao documentWaitingDao;
+        private LoginDao loginDao;
+        private ConnectionDetector connectionDetector;
+        private ICallFinishedListener callFinishedListener;
 
-    @Override
-    public int getCount() {
-        return documentWaitingInfos.size();
-    }
 
-    @Override
-    public Object getItem(int i) {
-        return documentWaitingInfos.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-         DocumentWaitingInfo newItem = this.documentWaitingInfos.get(i);
-            view = layoutInflater.inflate(R.layout.custom_listview, null);
-        TextView tv_time = view.findViewById(R.id.tv_time);
-        TextView tv_date = view.findViewById(R.id.tv_date);
-        TextView tv_kh = view.findViewById(R.id.tv_kh);
-        TextView tv_cqbh = view.findViewById(R.id.tv_cqbh);
-        TextView tv_ngay_vb = view.findViewById(R.id.tv_ngay_vb);
-        TextView tv_do_khan = view.findViewById(R.id.tv_do_khan);
-        ImageView img_file_dinh_kem = view.findViewById(R.id.img_file_dinh_kem);
-        TextView tvTitle = view.findViewById(R.id.tv_title);
-        TextView tvTrangThai  = view.findViewById(R.id.tv_trang_thai);
-        TextView tv_vaitro_xl_label = view.findViewById(R.id.tv_vaitro_xl_label);
-        TextView tv_vatro_xl = view.findViewById(R.id.tv_vatro_xl);
-
-
-        try{
-            if(newItem.getNgayNhan() != null){
-                try{
-                    String[] arr = newItem.getNgayNhan().split("");
-                    tv_time.setText(arr[1]);
-                    tv_date.setText(arr[0]);
-                }catch (Exception ex){
-                    tv_time.setText("");
-                    tv_date.setText("");
-                }
-            }
-            if (newItem.getTrichYeu() != null) {
-                tvTitle.setText(newItem.getTrichYeu());
-            }
-            if (newItem.getIsRead() != null) {
-                if (newItem.getIsRead().equals(Constants.IS_READ)) {
-                    tvTrangThai.setText(" " + context.getString(R.string.IS_READ));
-                    tvTitle.setTextColor(context.getResources().getColor(R.color.md_black));
-                }
-                if (newItem.getIsRead().equals(Constants.IS_NOT_READ)) {
-                    tvTrangThai.setText(" " + context.getString(R.string.IS_NOT_READ));
-                    tvTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                }
-            }
-            if (newItem.getSoKihieu() != null) {
-                tv_kh.setText(" " + newItem.getSoKihieu());
-            }
-            if (newItem.getCoQuanBanHanh() != null) {
-                tv_cqbh.setText(newItem.getCoQuanBanHanh());
-            }
-            if (newItem.getNgayVanBan() != null) {
-                tv_ngay_vb.setText(" " + newItem.getNgayVanBan());
-            }
-            if (newItem.getDoKhan() != null) {
-                tv_do_khan.setText(" " + newItem.getDoKhan());
-                if (newItem.getDoKhan().equals(context.getString(R.string.str_thuong))) {
-                    tv_do_khan.setTextColor(context.getResources().getColor(R.color.md_light_green_status));
-                } else {
-                    tv_do_khan.setTextColor(context.getResources().getColor(R.color.colorTextRed));
-                }
-            }
-            if (newItem.getRole() != null) {
-                tv_vaitro_xl_label.setVisibility(View.VISIBLE);
-                tv_vatro_xl.setVisibility(View.VISIBLE);
-
-                tv_vatro_xl.setText(" " + newItem.getRole());
-            } else {
-                tv_vatro_xl.setVisibility(View.GONE);
-                tv_vaitro_xl_label.setVisibility(View.GONE);
-            }
-            if (newItem.getHasFile() != null) {
-                if (newItem.getHasFile().equals(Constants.HAS_FILE)) {
-                    img_file_dinh_kem.setVisibility(View.VISIBLE);
-                }
-                if (newItem.getHasFile().equals(Constants.HAS_NOT_FILE)) {
-                    img_file_dinh_kem.setVisibility(View.GONE);
-                }
-            } else {
-                img_file_dinh_kem.setVisibility(View.VISIBLE);
-            }
-        }catch (Exception ex) {
-            ex.printStackTrace();
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
-      return  view;
+        @SuppressLint("NewApi")
+        void bindData(int position) {
+            DocumentWaitingInfo documentWaitingInfo = documentWaitingInfoList.get(position);
+            try {
+                if (documentWaitingInfo.getNgayNhan() != null) {
+                    try {
+                        String[] arr = documentWaitingInfo.getNgayNhan().split(" ");
+                        tvTime.setText(arr[1]);
+                        tvDate.setText(arr[0]);
+                    } catch (Exception ex) {
+                        tvTime.setText("");
+                        tvDate.setText("");
+                    }
+                }
+                if (documentWaitingInfo.getTrichYeu() != null) {
+                    tvTitle.setText(documentWaitingInfo.getTrichYeu());
+                }
+                if (documentWaitingInfo.getIsRead() != null) {
+                    if (documentWaitingInfo.getIsRead().equals(Constants.IS_READ)) {
+                        tvTrangThai.setText(" " + context.getString(R.string.IS_READ));
+                        tvTitle.setTextColor(context.getResources().getColor(R.color.md_black));
+                    }
+                    if (documentWaitingInfo.getIsRead().equals(Constants.IS_NOT_READ)) {
+                        tvTrangThai.setText(" " + context.getString(R.string.IS_NOT_READ));
+                        tvTitle.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                }
+                if (documentWaitingInfo.getSoKihieu() != null) {
+                    tvKH.setText(" " + documentWaitingInfo.getSoKihieu());
+                }
+                if (documentWaitingInfo.getCoQuanBanHanh() != null) {
+                    tvCQBH.setText(documentWaitingInfo.getCoQuanBanHanh());
+                }
+                if (documentWaitingInfo.getNgayVanBan() != null) {
+                    tvNgayVB.setText(" " + documentWaitingInfo.getNgayVanBan());
+                }
+                if (documentWaitingInfo.getDoKhan() != null) {
+                    tvDoKhan.setText(" " + documentWaitingInfo.getDoKhan());
+                    if (documentWaitingInfo.getDoKhan().equals(context.getString(R.string.str_thuong))) {
+                        tvDoKhan.setTextColor(context.getResources().getColor(R.color.md_light_green_status));
+                    } else {
+                        tvDoKhan.setTextColor(context.getResources().getColor(R.color.colorTextRed));
+                    }
+                }
+                if (documentWaitingInfo.getRole() != null) {
+                    tvVaiTro_XL_label.setVisibility(View.VISIBLE);
+                    tvVaiTro.setVisibility(View.VISIBLE);
 
+                    tvVaiTro.setText(" " + documentWaitingInfo.getRole());
+                } else {
+                    tvVaiTro.setVisibility(View.GONE);
+                    tvVaiTro_XL_label.setVisibility(View.GONE);
+                }
+                if (documentWaitingInfo.getHasFile() != null) {
+                    if (documentWaitingInfo.getHasFile().equals(Constants.HAS_FILE)) {
+                        imgFileDinhkem.setVisibility(View.VISIBLE);
+                    }
+                    if (documentWaitingInfo.getHasFile().equals(Constants.HAS_NOT_FILE)) {
+                        imgFileDinhkem.setVisibility(View.GONE);
+                    }
+                } else {
+                    imgFileDinhkem.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
+
+    public DocumentWaitingAdapter(Context context, List<DocumentWaitingInfo> documentWaitingInfoList) {
+        this.context = context;
+        this.documentWaitingInfoList = documentWaitingInfoList;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        if (viewType == TYPE_NEW) {
+            return new MyViewHolder(inflater.inflate(R.layout.custom_documentwaiting, parent, false));
+        } else {
+            return new LoadHolder(inflater.inflate(R.layout.progressbar_layout, parent, false));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+            isLoading = true;
+            loadMoreListener.onLoadMore();
+        }
+        if (getItemViewType(position) == TYPE_NEW) {
+            ((MyViewHolder) holder).bindData(position);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return documentWaitingInfoList.size();
+    }
+
+    static class LoadHolder extends RecyclerView.ViewHolder {
+        public LoadHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public void setMoreDataAvailable(boolean moreDataAvailable) {
+        isMoreDataAvailable = moreDataAvailable;
+    }
+
+    /* notifyDataSetChanged is final method so we can't override it
+         call adapter.notifyDataChanged(); after update the list
+    */
+    public void notifyDataChanged() {
+        notifyDataSetChanged();
+        isLoading = false;
+    }
+
+    public void removeAll() {
+        int size = this.documentWaitingInfoList.size();
+        this.documentWaitingInfoList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
+
 }

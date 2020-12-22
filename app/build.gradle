@@ -53,6 +53,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
     compileOnly 'javax.annotation:jsr250-api:1.0'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.cardview:cardview:1.0.0"
 
 }
 apply plugin: 'realm-android'

@@ -8,5 +8,6 @@ public class Constants {
     public static final String IS_READ = "TRUE";
     public static final String HAS_FILE = "null";
     public static final int DISPLAY_RECORD_SIZE = 10;
+    public static final int RESPONE_UNAUTHEN = 401;
 
 }
