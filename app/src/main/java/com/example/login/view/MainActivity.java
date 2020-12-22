@@ -126,12 +126,9 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
     public void clickEvent(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                Log.v("okhhh","-------------------------"+txtUsername.getText().toString());
-                Log.v("okhhh","-------------------------"+txtPassword.getText().toString());
                 if (connectionDetector.isConnectingToInternet()) {
                     validator.validate();
-                    if (!isValidateLogin) {
-
+                    if (isValidateLogin) {
                         loginPresenter.loginPresenter(new LoginRequest(txtUsername.getText().toString(),
                                         txtPassword.getText().toString(),
                                         appPrefs.getFirebaseToken(),
@@ -140,7 +137,6 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
                                         language
                                 )
                         );
-
                     }
                 } else {
                     AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
@@ -220,8 +216,7 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
         overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
-//        Intent i = new Intent(this, LoginActivity.class);
-//        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+
     }
 
 

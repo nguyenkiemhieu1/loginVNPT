@@ -19,4 +19,7 @@
     <string name="CLOSE_BUTTON">Đóng lại</string>
     <string name="LOGIN_TITLE_ERROR">LỖI ĐĂNG NHẬP</string>
     <string name="LOGIN_INVALID">Thông tin đăng nhập không chính xác</string>
+    <string name="IS_READ">Đã xem</string>
+    <string name="IS_NOT_READ">Chưa xem</string>
+    <string name="str_thuong">Thường</string>
 </resources>

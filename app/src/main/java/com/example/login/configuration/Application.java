@@ -17,8 +17,7 @@ public class Application extends android.app.Application {
         @Getter
         @Setter
         private ApplicationSharedPreferences appPrefs;
-        @Getter
-        private Typeface typeface;
+
         @Getter
         private int countFunction; // Số lượng chức năng bên menu trái
         @Getter
