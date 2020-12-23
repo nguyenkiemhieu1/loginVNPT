@@ -5,8 +5,10 @@ import com.example.login.model.BaseService;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaiting.IDocumentWaitingService;
+import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.HandleSyncService;
+import com.example.login.presenter.ICallFinishedListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -14,6 +16,16 @@ import retrofit2.Call;
 
 public class DocumentWaitingDao extends BaseDao implements  IDocumentWaitingDao {
     private IDocumentWaitingService documentWaitingService;
+
+    @Override
+    public void onGetDetail(int docId, ICallFinishedListener callFinishedListener) {
+        documentWaitingService = BaseService.createService(IDocumentWaitingService.class);
+        Call<DetailDocumentWaitingRespone> call = documentWaitingService.getDetail(docId);
+        call(call, callFinishedListener);
+        EventBus.getDefault().postSticky(new ExceptionCallAPIEvent(String.valueOf(call.request().url())));
+
+    }
+
     @Override
     public void onRecordsDocumentWaitingDao(DocumentWaitingRequest documentWaitingRequest, HandleSyncService.HandleGetRecords handleGetRecords) {
 
@@ -22,4 +34,5 @@ public class DocumentWaitingDao extends BaseDao implements  IDocumentWaitingDao 
         call(call, handleGetRecords);
         EventBus.getDefault().postSticky(new ExceptionCallAPIEvent(String.valueOf(call.request().url())));
     }
+
 }

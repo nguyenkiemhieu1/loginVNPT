@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
+        <activity android:name=".view.DetailDocumentWaitingActivity"></activity>
         <activity android:name=".view.DocumentWaitingActivity"></activity>
         <activity android:name=".view.MainActivity">
             <intent-filter>

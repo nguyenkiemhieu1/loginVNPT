@@ -10,6 +10,7 @@
     <string name="PASSWORD_INVALID_LENGTH">Password ít nhất phải dài 8 ký tự</string>
     <string name="NETWORK_TITLE_ERROR">LỖI MẠNG</string>
     <string name="str_dialog_thongbao"> Thông báo </string>
+    <string name="DETAIL_DOCUMENT_LABEL">Chi tiết văn bản</string>
     <string name="NO_INTERNET_ERROR">Không có kết nối Mạng\nVui lòng kết nối và thử lại</string>
 
 
@@ -23,4 +24,30 @@
     <string name="IS_READ">Đã xem</string>
     <string name="IS_NOT_READ">Chưa xem</string>
     <string name="str_thuong">Thường</string>
+
+    <string name="tv_trichyeu">Trích yếu: </string>
+    <string name="tv_cqbh">CQBH: </string>
+    <string name="tv_sokyhieu">Số ký hiệu: </string>
+    <string name="tv_ngayden">Ngày đến: </string>
+    <string name="tv_ngay_vb">Ngày VB: </string>
+    <string name="tv_hinhthucvb">Hình thức VB: </string>
+    <string name="tv_sovanban">Số văn bản: </string>
+    <string name="tv_soden">Số đến: </string>
+    <string name="tv_do_khan">Độ khẩn: </string>
+    <string name="tv_hanxuly">Hạn xử lý: </string>
+    <string name="tv_sotrang">Số trang: </string>
+    <string name="tv_hinhthucgui">Hình thức gửi: </string>
+    <string name="tv_vanbanliequan">Văn bản liên quan</string>
+    <string name="tv_tonghopykienxuly">Tổng hợp ý kiến xử lý</string>
+    <string name="tv_file_dinh_kem">Tệp tin đính kèm: </string>
+    <string name="tv_chuyen">Chuyển</string>
+    <string name="tv_chuyen_xuly">Chuyển xử lý</string>
+    <string name="tv_gui_ykien">Gửi ý kiến</string>
+    <string name="tv_bo_danhdau">Bỏ Đánh dấu</string>
+    <string name="tv_lichsu">Lịch sử</string>
+    <string name="tv_luu_hoso">Lưu hồ sơ</string>
+    <string name="tv_ketthuc">Kết thúc</string>
+    <string name="tv_vb_lienquan">Related documents</string>
+    <string name="tv_tonghop_y_kien">Tổng hợp ý kiến</string>
+    <string name="TITLE_NOTIFICATION">THÔNG BÁO</string>
 </resources>

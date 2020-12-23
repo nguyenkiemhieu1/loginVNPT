@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
         validator = new Validator(this);
         validator.setValidationListener(this);
         appPrefs.setDeviceName(nameDevice);
-        startActivity(new Intent(getApplicationContext(), DocumentWaitingActivity.class));
+
     }
 
     @OnClick({R.id.btn_login, R.id.tv_language, R.id.image_language})
@@ -237,7 +237,7 @@ public class MainActivity extends BaseActivity implements ILoginView, Validator.
         appPrefs.setUnitUser(loginInfo.getUnitId());
         appPrefs.setAccountLogin(loginInfo);
         EventBus.getDefault().postSticky(loginInfo);
-
+        startActivity(new Intent(getApplicationContext(), DocumentWaitingActivity.class));
 
     }
 

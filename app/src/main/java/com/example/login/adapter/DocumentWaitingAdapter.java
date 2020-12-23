@@ -2,10 +2,12 @@ package com.example.login.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,14 +19,17 @@ import com.example.login.common.Constants;
 import com.example.login.configuration.Application;
 import com.example.login.configuration.ApplicationSharedPreferences;
 import com.example.login.model.APIError;
+import com.example.login.model.DetailDocumentWaiting.DetailDocumentInfo;
 import com.example.login.model.DocumentWaitingInfo;
 import com.example.login.model.LoginInfo;
+import com.example.login.model.TypeChangeDocumentRequest;
 import com.example.login.presenter.DocumentWaitingDao.DocumentWaitingDao;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ExceptionRequest;
 import com.example.login.presenter.ICallFinishedListener;
 import com.example.login.presenter.IExceptionErrorView;
 import com.example.login.presenter.loginDao.LoginDao;
+import com.example.login.view.DetailDocumentWaitingActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,24 +47,6 @@ public class DocumentWaitingAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     boolean isLoading = false, isMoreDataAvailable = true;
     private ApplicationSharedPreferences appPrefs;
 
-    private void sendExceptionError(APIError apiError) {
-        ExceptionRequest exceptionRequest = new ExceptionRequest();
-        LoginInfo eventbus = EventBus.getDefault().getStickyEvent(LoginInfo.class);
-        if (eventbus != null) {
-            exceptionRequest.setUserId(eventbus.getUsername());
-        } else {
-            exceptionRequest.setUserId("");
-        }
-        appPrefs = Application.getApp().getAppPrefs();
-        exceptionRequest.setDevice(appPrefs.getDeviceName());
-        ExceptionCallAPIEvent error = EventBus.getDefault().getStickyEvent(ExceptionCallAPIEvent.class);
-        if (error != null) {
-            exceptionRequest.setFunction(error.getUrlAPI());
-        } else {
-            exceptionRequest.setFunction("");
-        }
-        exceptionRequest.setException(apiError.getMessage());
-    }
 
 
     public interface OnLoadMoreListener {
@@ -105,10 +92,9 @@ public class DocumentWaitingAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView tvVaiTro_XL_label;
         @BindView(R.id.tv_file_attach_label)
         TextView imgFileDinhkem_label;
-        private DocumentWaitingDao documentWaitingDao;
-        private LoginDao loginDao;
-        private ConnectionDetector connectionDetector;
-        private ICallFinishedListener callFinishedListener;
+        @BindView(R.id.linear)
+        LinearLayout linear;
+
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -179,6 +165,15 @@ public class DocumentWaitingAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 } else {
                     imgFileDinhkem.setVisibility(View.VISIBLE);
                 }
+                linear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().postSticky(documentWaitingInfo);
+                        EventBus.getDefault().postSticky(new DetailDocumentInfo(documentWaitingInfo.getId(), Constants.DOCUMENT_WAITING, null));
+                        EventBus.getDefault().postSticky(new TypeChangeDocumentRequest(documentWaitingInfo.getId(), documentWaitingInfo.getProcessDefinitionId(), documentWaitingInfo.getCongVanDenDi()));
+                        context.startActivity(new Intent(context, DetailDocumentWaitingActivity.class));
+                    }
+                });
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -6,15 +6,21 @@ import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.presenter.DetailDocumentWaiting.IDetailDocumentWaitingView;
 import com.example.login.presenter.HandleSyncService;
 import com.example.login.presenter.ICallFinishedListener;
 
 public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, ICallFinishedListener, HandleSyncService.HandleGetRecords {
     public DocumentWaitingDao documentWaitingDao;
     public IDocumentWaitingView documentWaitingView;
+    public IDetailDocumentWaitingView detailDocumentWaitingView;
 
     public DocumentWaitingPresenterImpl(IDocumentWaitingView documentWaitingView) {
         this.documentWaitingView = documentWaitingView;
+        this.documentWaitingDao = new DocumentWaitingDao();
+    }
+    public DocumentWaitingPresenterImpl(IDetailDocumentWaitingView detailDocumentWaitingView) {
+        this.detailDocumentWaitingView = detailDocumentWaitingView;
         this.documentWaitingDao = new DocumentWaitingDao();
     }
 
@@ -25,6 +31,17 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
     }
 
     }
+
+    @Override
+    public void getDetail(int id) {
+        if (detailDocumentWaitingView != null) {
+            detailDocumentWaitingView.showProgress();
+            documentWaitingDao.onGetDetail(id, this);
+        }
+
+    }
+
+
 
     @Override
     public void onSuccessGetRecords(Object object) {

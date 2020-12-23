@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,15 +38,14 @@ import com.example.login.presenter.loginView.ILoginView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DocumentWaitingActivity extends AppCompatActivity implements IDocumentWaitingView, ILoginView {
+
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.no_data)
@@ -59,28 +59,28 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
     private ConnectionDetector connectionDetector;
     private DocumentWaitingAdapter documentWaitingAdapter;
     private LoginInfo loginInfo;
-    private Timer timer;
     private ProgressDialog progressDialog;
 
     private ApplicationSharedPreferences appPrefs;
-    private List<DocumentWaitingInfo> documentWaitingInfoList;
+    private List<DocumentWaitingInfo> documentWaitingInfoLists;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.document_waiting_layout);
         init();
-
+        ButterKnife.bind(this);
     }
 
     private void init() {
-        timer = new Timer();
+
 
         appPrefs = Application.getApp().getAppPrefs();
 
         loginInfo = appPrefs.getAccountLogin();
-        connectionDetector = new ConnectionDetector(getApplicationContext());
-        documentWaitingInfoList = new ArrayList<>();
+        page = 1;
+        connectionDetector = new ConnectionDetector(this);
+        documentWaitingInfoLists = new ArrayList<>();
         if (connectionDetector.isConnectingToInternet()) {
             EventBus.getDefault().postSticky(new InitEvent(true));
             EventBus.getDefault().postSticky(new KhoVanBanEvent(mParam1));
@@ -88,14 +88,14 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
                     , String.valueOf(Constants.DISPLAY_RECORD_SIZE), keyword, mParam1));
 
         } else {
-            AlertDialogManager.showAlertDialog(getApplicationContext(),    getApplicationContext().getString(R.string.NETWORK_TITLE_ERROR), getApplicationContext().getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+            AlertDialogManager.showAlertDialog(this, this.getString(R.string.NETWORK_TITLE_ERROR), this.getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
         }
-        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog = new ProgressDialog(this);
 
 
     }
     private void prepareNewdata(){
-        documentWaitingAdapter = new DocumentWaitingAdapter(getApplicationContext(), documentWaitingInfoList);
+        documentWaitingAdapter = new DocumentWaitingAdapter(this, documentWaitingInfoLists);
         documentWaitingAdapter.setLoadMoreListener(new DocumentWaitingAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -103,7 +103,7 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
                     @Override
                     public void run() {
                         page++;
-                        if (documentWaitingInfoList.size() % Constants.DISPLAY_RECORD_SIZE == 0) {
+                        if (documentWaitingInfoLists.size() % Constants.DISPLAY_RECORD_SIZE == 0) {
                             loadMore(page);
                         }
 
@@ -111,11 +111,11 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
                 });
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(documentWaitingAdapter);
         documentWaitingAdapter.notifyDataSetChanged();
-        if(documentWaitingInfoList != null && documentWaitingInfoList.size() > 0){
+        if(documentWaitingInfoLists != null && documentWaitingInfoLists.size() > 0){
             no_data.setVisibility(View.GONE);
         }else {
             no_data.setVisibility(View.VISIBLE);
@@ -128,37 +128,27 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
             documentWaitingPresenter.getRecords(new DocumentWaitingRequest(String.valueOf(page),
                     String.valueOf(Constants.DISPLAY_RECORD_SIZE), keyword, mParam1));
         } else {
-            AlertDialogManager.showAlertDialog(getApplicationContext(), getApplicationContext().getString(R.string.NETWORK_TITLE_ERROR), getApplicationContext().getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+            AlertDialogManager.showAlertDialog(this,this.getString(R.string.NETWORK_TITLE_ERROR), this.getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
         }
-    }
-    private void selectAllListOrType() {
-        if (documentWaitingInfoList != null && documentWaitingInfoList.size() > 0) {
-            for (int i = 0; i < documentWaitingInfoList.size(); i++) {
-                documentWaitingInfoList.get(i).setSelect(true);
-//                documentWaitingAdapter.notifyItemChanged(i);
-                documentWaitingAdapter.notifyDataSetChanged();
-            }
-        }
-
     }
 
     @Override
     public void onSuccessRecords(List<DocumentWaitingInfo> documentWaitingInfoList) {
         if (EventBus.getDefault().getStickyEvent(InitEvent.class).isInit()) {
             if (documentWaitingInfoList != null && documentWaitingInfoList.size() > 0) {
-                documentWaitingInfoList.addAll(documentWaitingInfoList);
+                documentWaitingInfoLists.addAll(documentWaitingInfoList);
             }
             prepareNewdata();
             EventBus.getDefault().postSticky(new InitEvent(false));
         } else {
-            documentWaitingInfoList.add(new DocumentWaitingInfo());
-            documentWaitingAdapter.notifyItemInserted(documentWaitingInfoList.size() - 1);
-            documentWaitingInfoList.remove(documentWaitingInfoList.size() - 1);
+            documentWaitingInfoLists.add(new DocumentWaitingInfo());
+            documentWaitingAdapter.notifyItemInserted(documentWaitingInfoLists.size() - 1);
+            documentWaitingInfoLists.remove(documentWaitingInfoLists.size() - 1);
             if (documentWaitingInfoList != null && documentWaitingInfoList.size() > 0) {
                     for (int i = 0; i < documentWaitingInfoList.size(); i++) {
                         documentWaitingInfoList.get(i).setSelect(true);
                     }
-                documentWaitingInfoList.addAll(documentWaitingInfoList);
+                documentWaitingInfoLists.addAll(documentWaitingInfoList);
             } else {
                 documentWaitingAdapter.setMoreDataAvailable(false);
             }
@@ -175,10 +165,10 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
                 loginPresenter.getUserLoginPresenter(Application.getApp().getAppPrefs().getAccount());
 
             }else {
-                AlertDialogManager.showAlertDialog(getApplicationContext(), getApplicationContext().getString(R.string.NETWORK_TITLE_ERROR), getApplicationContext().getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+                AlertDialogManager.showAlertDialog(this, this.getString(R.string.NETWORK_TITLE_ERROR), this.getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
             }
         }else {
-            AlertDialogManager.showAlertDialog(getApplicationContext(), getApplicationContext().getString(R.string.str_dialog_thongbao), apiError.getMessage(), true, AlertDialogManager.ERROR);
+            AlertDialogManager.showAlertDialog(this, this.getString(R.string.str_dialog_thongbao), apiError.getMessage(), true, AlertDialogManager.ERROR);
         }
 
     }
@@ -211,7 +201,7 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
             documentWaitingPresenter.getRecords(new DocumentWaitingRequest(String.valueOf(page)
                     , String.valueOf(Constants.DISPLAY_RECORD_SIZE), keyword, mParam1));
         } else {
-            AlertDialogManager.showAlertDialog(getApplicationContext(), getApplicationContext().getString(R.string.NETWORK_TITLE_ERROR), getApplicationContext().getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+            AlertDialogManager.showAlertDialog(this, this.getString(R.string.NETWORK_TITLE_ERROR), this.getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
         }
     }
 
@@ -226,15 +216,15 @@ public class DocumentWaitingActivity extends AppCompatActivity implements IDocum
 
     @Override
     public void showProgress() {
-        if(getApplicationContext() instanceof BaseActivity)
-             ((BaseActivity) getApplicationContext()).showProgressDialog();
+//        if(getApplicationContext() instanceof BaseActivity)
+//             ((BaseActivity) getApplicationContext()).showProgressDialog();
 
     }
 
     @Override
     public void hideProgress() {
-        if(getApplicationContext() instanceof BaseActivity)
-            ((BaseActivity) getApplicationContext()).hideProgressDialog();
+//        if(getApplicationContext() instanceof BaseActivity)
+//            ((BaseActivity) getApplicationContext()).hideProgressDialog();
 
     }
 }
