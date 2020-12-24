@@ -1,14 +1,18 @@
 package com.example.login.presenter.DocumentWaitingDao;
 
+import com.example.login.R;
 import com.example.login.common.Constants;
 import com.example.login.common.ConvertUtils;
 import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
 import com.example.login.presenter.DetailDocumentWaiting.IDetailDocumentWaitingView;
 import com.example.login.presenter.HandleSyncService;
 import com.example.login.presenter.ICallFinishedListener;
+
+import static com.example.login.configuration.Application.resources;
 
 public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, ICallFinishedListener, HandleSyncService.HandleGetRecords {
     public DocumentWaitingDao documentWaitingDao;
@@ -41,6 +45,14 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
 
     }
 
+    @Override
+    public void checkFinish(int id) {
+        if (detailDocumentWaitingView != null) {
+            detailDocumentWaitingView.showProgress();
+            documentWaitingDao.onCheckFinishDocument(id, this);
+        }
+
+    }
 
 
     @Override
@@ -66,6 +78,15 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
 
     @Override
     public void onCallSuccess(Object object) {
+        if (object instanceof DetailDocumentWaitingRespone) {
+            detailDocumentWaitingView.hideProgress();
+            DetailDocumentWaitingRespone detailDocumentWaitingRespone = (DetailDocumentWaitingRespone) object;
+            if (detailDocumentWaitingRespone != null && detailDocumentWaitingRespone.getResponeAPI().getCode().equals(Constants.RESPONE_SUCCESS)) {
+                detailDocumentWaitingView.onSuccess(detailDocumentWaitingRespone.getData());
+            } else {
+                detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_DIALOG)));
+            }
+        }
 
     }
 
@@ -76,4 +97,5 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
             documentWaitingView.onError((APIError) object);
         }
     }
+
 }

@@ -50,4 +50,5 @@
     <string name="tv_vb_lienquan">Related documents</string>
     <string name="tv_tonghop_y_kien">Tổng hợp ý kiến</string>
     <string name="TITLE_NOTIFICATION">THÔNG BÁO</string>
+<!--    <string name="str_ERROR_DIALOG">Có lỗi xảy ra!\nVui lòng thử lại sau!</string>-->
 </resources>

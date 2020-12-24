@@ -155,13 +155,20 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
         appPrefs = Application.getApp().getAppPrefs();
         detailDocumentInfo = EventBus.getDefault().getStickyEvent(DetailDocumentInfo.class);
         connectionDetector = new ConnectionDetector(this);
+        if (!appPrefs.getAccountLogin().isBriefDisplay()) {
+            btnSave.setVisibility(View.GONE);
+        }
     }
 
+    private void checkFinish(int id) {
+        documentWaitingPresenter.checkFinish(id);
+    }
 
     private void getDetail() {
         if (connectionDetector.isConnectingToInternet()) {
             if (detailDocumentInfo.getType().equals(Constants.DOCUMENT_WAITING)) {
                 documentWaitingPresenter.getDetail(Integer.parseInt(detailDocumentInfo.getId()));
+                checkFinish(Integer.parseInt(detailDocumentInfo.getId()));
             }
         } else {
             AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
@@ -248,7 +255,9 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
     }
 
     private int idDoc;
-    @Override
+
+
+        @Override
     public void onSuccess(Object object) {
         if(object instanceof DetailDocumentWaiting){
             EventBus.getDefault()

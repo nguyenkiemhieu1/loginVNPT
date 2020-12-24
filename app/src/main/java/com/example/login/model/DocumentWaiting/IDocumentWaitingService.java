@@ -1,5 +1,6 @@
 package com.example.login.model.DocumentWaiting;
 
+import com.example.login.presenter.CheckFinishDocumentRespone;
 import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
 import com.example.login.presenter.DocumentWaitingDao.CountDocumentWaitingRespone;
 import com.example.login.presenter.ServiceUrl;
@@ -16,4 +17,6 @@ public interface IDocumentWaitingService {
     Call<DocumentWaitingRespone> getAll(@Body DocumentWaitingRequest documentWaitingRequest);
     @GET(ServiceUrl.GET_DETAIL_DOCUMENT_WAITING_URL)
     Call<DetailDocumentWaitingRespone> getDetail(@Path("id") int docId);
+    @GET(ServiceUrl.CHECK_FINISH_DOC_URL)
+    Call<CheckFinishDocumentRespone> checkFinish(@Path("id") int docId);
 }
