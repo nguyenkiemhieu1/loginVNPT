@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -145,6 +146,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
     private boolean marked;
     private ConnectionDetector connectionDetector;
     DetailDocumentWaiting detailDocumentWaiting;
+//    private Button buttonAnchor;
 
     private ApplicationSharedPreferences appPrefs;
     private TypeChangeDocumentRequest typeChangeDocumentRequest;
@@ -357,6 +359,16 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     @Override
     public void onMark() {
+        if (marked) {
+            marked = false;
+            btnMark.setText(getResources().getString(R.string.tv_danhdau));
+            Toast.makeText(this, getString(R.string.NOT_MARKED_SUCCESS), Toast.LENGTH_LONG).show();
+        } else {
+            marked = true;
+            btnMark.setText(getResources().getString(R.string.str_huy_danhgiau));
+            Toast.makeText(this, getString(R.string.MARKED_SUCCESS), Toast.LENGTH_LONG).show();
+        }
+        EventBus.getDefault().postSticky(new ReloadDocWaitingtEvent(true));
 
     }
 
@@ -370,7 +382,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     }
 
-    @OnClick({R.id.btnMove})
+    @OnClick({R.id.btnMove, R.id.btnMark})
     public void onViewClicked(View view){
             switch (view.getId()){
                 case R.id.btnMove:
@@ -379,8 +391,19 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
                     changeDocumentPresenter.getTypeChangeDocument(new TypeChangeDocRequest(typeChangeDocumentRequest.getDocId(), typeChangeDocumentRequest.getProcessDefinitionId()));
                     break;
+                case R.id.btnMark:
+                    mark();
+                    break;
             }
 
+    }
+
+    private void mark() {
+        if (connectionDetector.isConnectingToInternet()) {
+            documentWaitingPresenter.mark(detailDocumentWaiting.getId());
+        } else {
+            AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+        }
     }
 
     @Override

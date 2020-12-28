@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
-public class TypeChangeDocumentRespone extends StatusRespone {
+public class    TypeChangeDocumentRespone extends StatusRespone {
     @SerializedName("data")
     @Setter
     @Getter

@@ -6,4 +6,5 @@ public interface IDocumentWaitingPresenter {
     void getRecords(DocumentWaitingRequest documentWaitingRequest);
     void getDetail(int id);
     void checkFinish(int id);
+    void mark(int id);
 }

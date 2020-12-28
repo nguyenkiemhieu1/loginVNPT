@@ -7,6 +7,7 @@ import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.MarkDocumentRespone;
 import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
 import com.example.login.presenter.DetailDocumentWaiting.IDetailDocumentWaitingView;
 import com.example.login.presenter.HandleSyncService;
@@ -54,6 +55,15 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
 
     }
 
+    @Override
+    public void mark(int id) {
+        if (detailDocumentWaitingView != null) {
+            detailDocumentWaitingView.showProgress();
+            documentWaitingDao.onMarkDocument(id, this);
+        }
+
+    }
+
 
     @Override
     public void onSuccessGetRecords(Object object) {
@@ -85,6 +95,19 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
                 detailDocumentWaitingView.onSuccess(detailDocumentWaitingRespone.getData());
             } else {
                 detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_DIALOG)));
+            }
+        }
+        if (object instanceof MarkDocumentRespone) {
+            detailDocumentWaitingView.hideProgress();
+            MarkDocumentRespone markDocumentRespone = (MarkDocumentRespone) object;
+            if (markDocumentRespone != null && markDocumentRespone.getResponeAPI().getCode().equals(Constants.RESPONE_SUCCESS)) {
+                if (markDocumentRespone.getData() != null && markDocumentRespone.getData().equals(Constants.MARKED_SUCCESS)) {
+                    detailDocumentWaitingView.onMark();
+                } else {
+                    detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_TICK_DOCUMENT_DIALOG)));
+                }
+            } else {
+                detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_TICK_DOCUMENT_DIALOG)));
             }
         }
 

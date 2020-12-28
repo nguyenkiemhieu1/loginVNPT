@@ -7,8 +7,7 @@ import lombok.Setter;
 
 public class TypeChangeDocument {
     @SerializedName("type")
-    @Setter
-    @Getter
+    @Setter @Getter
     private int type;
     @SerializedName("nextStep")
     @Setter @Getter private String nextStep;

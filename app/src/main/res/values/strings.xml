@@ -16,6 +16,10 @@
 
     <string name="str_language">Chọn ngôn ngữ</string>
 
+    <string name="str_ERROR_TICK_DOCUMENT_DIALOG">Lỗi đánh dấu văn bản!</string>
+    <string name="NOT_MARKED_SUCCESS">Văn bản đã được bỏ đánh dấu</string>
+    <string name="tv_danhdau">Đánh dấu</string>
+    <string name="MARKED_SUCCESS">Đánh dấu văn bản thành công</string>
     <string name="str_en">Tiếng Anh</string>
     <string name="str_ls">Tiếng Lào</string>
     <string name="CLOSE_BUTTON">Đóng lại</string>
