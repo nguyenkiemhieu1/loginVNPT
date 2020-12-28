@@ -51,4 +51,27 @@
     <string name="tv_tonghop_y_kien">Tổng hợp ý kiến</string>
     <string name="TITLE_NOTIFICATION">THÔNG BÁO</string>
 <!--    <string name="str_ERROR_DIALOG">Có lỗi xảy ra!\nVui lòng thử lại sau!</string>-->
+
+    <string name="str_huy_danhgiau">Hủy đánh dấu</string>
+    <string name="str_danhgiau">Đánh dấu</string>
+
+
+
+    <string name="tv_xuly">Xử lý</string>
+    <string name="tv_xuly_chinh">Xử lý chính</string>
+    <string name="tv_XLC">XLC</string>
+    <string name="tv_dong_xuly">Đồng xử lý</string>
+    <string name="tv_PH">PH</string>
+    <string name="tv_phoihop">Phối hợp</string>
+    <string name="tv_Xem">Xem</string>
+    <string name="tv_ho_ten_dv">Họ tên/Đơn vị</string>
+    <string name="tv_DonVi">Đơn vị</string>
+    <string name="tv_donggui">Đồng gửi</string>
+    <string name="tv_gui">Gửi</string>
+    <string name="tv_tructiep">Đơn vị/Cá nhân nhận trực tiếp</string>
+    <string name="tv_nguoi_nhan_thongbao">Người nhận thông báo</string>
+    <string name="tv_ho_ten">Họ tên</string>
+
+    <string name="tv_xem_db">Xem để biết</string>
+    <string name="tv_xin_y_kien">Xin ý kiến: </string>
 </resources>

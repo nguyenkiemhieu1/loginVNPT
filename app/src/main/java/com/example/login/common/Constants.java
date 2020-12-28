@@ -11,4 +11,8 @@ public class Constants {
     public static final int RESPONE_UNAUTHEN = 401;
     public static final String DOCUMENT_WAITING = "DOCUMENT_WAITING";
 
+    public static final String SEND_RULE = "TRUE";
+    public static final String NOT_MARKED = "0";
+    public static final String NEW_HISTORY = "0";
+    public static final String COMMENT_RULE = "true";
 }

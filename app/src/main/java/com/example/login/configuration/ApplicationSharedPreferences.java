@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.login.model.ListPersonPreEvent;
 import com.example.login.model.LoginInfo;
 import com.example.login.model.LoginRequest;
 
@@ -96,6 +97,10 @@ public class ApplicationSharedPreferences {
 
     public String getTimeSync() {
         return tinyDB.getString(TIME_SYNC);
+    }
+
+    public void setPersonPre(ListPersonPreEvent listPersonPreEvent) {
+        tinyDB.putObject(SEND_DOC_PERSON_PRE, listPersonPreEvent);
     }
 
     public void setAccountLogin(LoginInfo loginRequest) {
