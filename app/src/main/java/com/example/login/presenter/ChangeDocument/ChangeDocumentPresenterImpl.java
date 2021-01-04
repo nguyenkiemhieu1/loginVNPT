@@ -15,6 +15,7 @@ public class ChangeDocumentPresenterImpl implements IChangeDocumentPresenter, IC
 
 
 
+
     public ChangeDocumentPresenterImpl(IGetTypeChangeDocumentView getTypeChangeDocumentView) {
         this.iGetTypeChangeDocumentView =  getTypeChangeDocumentView;
         this.changeDocumentDao = new ChangeDocumentDao();
@@ -28,6 +29,15 @@ public class ChangeDocumentPresenterImpl implements IChangeDocumentPresenter, IC
             changeDocumentDao.onSendGetTypeChangeDocumentDao(typeChangeDocumentRequest, this);
         }
 
+    }
+
+    @Override
+    public void getTypeChangeDocumentViewFiles(TypeChangeDocRequest typeChangeDocumentRequest) {
+
+        if (iGetTypeChangeDocumentView != null) {
+            iGetTypeChangeDocumentView.showProgress();
+            changeDocumentDao.onSendGetTypeChangeDocumentViewFilesDao(typeChangeDocumentRequest, this);
+        }
     }
 
     @Override

@@ -7,7 +7,9 @@ import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.FinishDocumentRespone;
 import com.example.login.model.MarkDocumentRespone;
+import com.example.login.presenter.CheckFinishDocumentRespone;
 import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
 import com.example.login.presenter.DetailDocumentWaiting.IDetailDocumentWaitingView;
 import com.example.login.presenter.HandleSyncService;
@@ -64,6 +66,15 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
 
     }
 
+    @Override
+    public void finish(int id, String comment) {
+        if (detailDocumentWaitingView != null) {
+            detailDocumentWaitingView.showProgress();
+            documentWaitingDao.onFinish(id, comment, this);
+        }
+
+    }
+
 
     @Override
     public void onSuccessGetRecords(Object object) {
@@ -108,6 +119,33 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
                 }
             } else {
                 detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_TICK_DOCUMENT_DIALOG)));
+            }
+        }
+        if (object instanceof FinishDocumentRespone) {
+            detailDocumentWaitingView.hideProgress();
+            FinishDocumentRespone finishDocumentRespone = (FinishDocumentRespone) object;
+            if (finishDocumentRespone != null && finishDocumentRespone.getResponeAPI().getCode().equals(Constants.RESPONE_SUCCESS)) {
+                if (finishDocumentRespone.getData() != null) {
+                    detailDocumentWaitingView.onFinish();
+                } else {
+                    detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_END_DOCUMENT_DIALOG)));
+                }
+            } else {
+                detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_END_DOCUMENT_DIALOG)));
+            }
+        }
+
+        if (object instanceof CheckFinishDocumentRespone) {
+            detailDocumentWaitingView.hideProgress();
+            CheckFinishDocumentRespone checkFinishDocumentRespone = (CheckFinishDocumentRespone) object;
+            if (checkFinishDocumentRespone != null && checkFinishDocumentRespone.getResponeAPI().getCode().equals(Constants.RESPONE_SUCCESS)) {
+                if (checkFinishDocumentRespone.getData() != null && checkFinishDocumentRespone.getData().equals(Constants.IS_FINISH)) {
+                    detailDocumentWaitingView.onCheckFinish(true);
+                } else {
+                    detailDocumentWaitingView.onCheckFinish(false);
+                }
+            } else {
+                detailDocumentWaitingView.onError(new APIError(0, resources.getString(R.string.str_ERROR_DIALOG)));
             }
         }
 

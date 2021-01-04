@@ -2,9 +2,11 @@ package com.example.login.presenter.DocumentWaitingDao;
 
 import com.example.login.model.BaseDao;
 import com.example.login.model.BaseService;
+import com.example.login.model.CommentRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
 import com.example.login.model.DocumentWaiting.IDocumentWaitingService;
+import com.example.login.model.FinishDocumentRespone;
 import com.example.login.model.MarkDocumentRespone;
 import com.example.login.presenter.CheckFinishDocumentRespone;
 import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
@@ -50,5 +52,11 @@ public class DocumentWaitingDao extends BaseDao implements  IDocumentWaitingDao 
         call(call, callFinishedListener);
         EventBus.getDefault().postSticky(new ExceptionCallAPIEvent(String.valueOf(call.request().url())));
     }
-
+    @Override
+    public void onFinish(int id, String comment, ICallFinishedListener iCallFinishedListener) {
+        documentWaitingService = BaseService.createService(IDocumentWaitingService.class);
+        Call<FinishDocumentRespone> call = documentWaitingService.finish(new CommentRequest(id, comment));
+        call(call, iCallFinishedListener);
+        EventBus.getDefault().postSticky(new ExceptionCallAPIEvent(String.valueOf(call.request().url())));
+    }
 }

@@ -4,4 +4,5 @@ import com.example.login.model.TypeChangeDocRequest;
 
 public interface IChangeDocumentPresenter {
     void getTypeChangeDocument(TypeChangeDocRequest typeChangeDocumentRequest);
+    void getTypeChangeDocumentViewFiles(TypeChangeDocRequest typeChangeDocumentRequest);
 }

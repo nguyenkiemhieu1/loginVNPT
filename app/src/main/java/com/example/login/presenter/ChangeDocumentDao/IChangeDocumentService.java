@@ -11,4 +11,6 @@ import retrofit2.http.POST;
 public interface IChangeDocumentService {
     @POST(ServiceUrl.GET_LIST_TYPE_CHANGE_DOC_URL)
     Call<TypeChangeDocumentRespone> getTypeChange(@Body TypeChangeDocRequest typeChangeDocumentRequest);
+    @POST(ServiceUrl.GET_LIST_TYPE_CHANGE_DOC_VIEW_FILES_URL)
+    Call<TypeChangeDocumentRespone> getTypeChangeViewFiles(@Body TypeChangeDocRequest typeChangeDocumentRequest);
 }

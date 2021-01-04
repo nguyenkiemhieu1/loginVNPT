@@ -16,4 +16,5 @@ public class Constants {
     public static final String NEW_HISTORY = "0";
     public static final String COMMENT_RULE = "true";
     public static final String MARKED_SUCCESS = "true";
+    public static final String IS_FINISH = "true";
 }

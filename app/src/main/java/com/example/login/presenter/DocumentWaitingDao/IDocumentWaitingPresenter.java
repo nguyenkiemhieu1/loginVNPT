@@ -7,4 +7,6 @@ public interface IDocumentWaitingPresenter {
     void getDetail(int id);
     void checkFinish(int id);
     void mark(int id);
+    void finish(int id,String comment);
+
 }

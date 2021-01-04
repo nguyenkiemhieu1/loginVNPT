@@ -3,9 +3,11 @@ package com.example.login.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListPopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.R;
 import com.example.login.common.ConnectionDetector;
 import com.example.login.common.Constants;
+import com.example.login.common.DialogCommentFinish;
 import com.example.login.common.ReloadDocWaitingtEvent;
 import com.example.login.configuration.AlertDialogManager;
 import com.example.login.configuration.Application;
@@ -26,8 +29,11 @@ import com.example.login.model.DetailDocumentWaiting.DetailDocumentInfo;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentWaiting;
 import com.example.login.model.DetailDocumentWaiting.UnitLogInfo;
 import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.FeedBackEvent;
+import com.example.login.model.FinishEvent;
 import com.example.login.model.ListPersonPreEvent;
 import com.example.login.model.LoginInfo;
+import com.example.login.model.SaveFinishDocumentEvent;
 import com.example.login.model.TypeChangeDocRequest;
 import com.example.login.model.TypeChangeDocument;
 import com.example.login.model.TypeChangeDocumentRequest;
@@ -41,19 +47,23 @@ import com.example.login.presenter.DocumentWaitingDao.IDocumentWaitingView;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ExceptionRequest;
 import com.example.login.presenter.ILoginPresenter;
+import com.example.login.presenter.ItemClickGetTypeChangeButton;
 import com.example.login.presenter.LoginPresenterImpl;
 import com.example.login.presenter.loginView.ILoginView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailDocumentWaitingActivity extends BaseActivity implements ILoginView, IDetailDocumentWaitingView , IGetTypeChangeDocumentView {
+public class DetailDocumentWaitingActivity extends BaseActivity implements ILoginView, IDetailDocumentWaitingView, IGetTypeChangeDocumentView, ItemClickGetTypeChangeButton {
     @BindView(R.id.tv_trichyeu)
     TextView tv_trichyeu;
     @BindView(R.id.tv_title)
@@ -146,7 +156,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
     private boolean marked;
     private ConnectionDetector connectionDetector;
     DetailDocumentWaiting detailDocumentWaiting;
-//    private Button buttonAnchor;
+
 
     private ApplicationSharedPreferences appPrefs;
     private TypeChangeDocumentRequest typeChangeDocumentRequest;
@@ -156,7 +166,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
     private IChangeDocumentPresenter changeDocumentPresenter = new ChangeDocumentPresenterImpl(this);
 
 
-//    tìm hiểu về move, mark, history, finish
+    //    tìm hiểu về move, mark, history, finish
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,12 +176,22 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
         getDetail();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
+    }
+
     private void init() {
         appPrefs = Application.getApp().getAppPrefs();
         setupToolbar();
         detailDocumentInfo = EventBus.getDefault().getStickyEvent(DetailDocumentInfo.class);
         typeChangeDocumentRequest = EventBus.getDefault().getStickyEvent(TypeChangeDocumentRequest.class);
         connectionDetector = new ConnectionDetector(this);
+
         if (!appPrefs.getAccountLogin().isBriefDisplay()) {
             btnSave.setVisibility(View.GONE);
         }
@@ -199,15 +219,12 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
                 } else {
                     btnMark.setVisibility(View.GONE);
                 }
-
                 // ẩn hiện nút chuyển xử lý
                 if (newItem.getIsChuyenTiep() != null && newItem.getIsChuyenTiep().equals(Constants.COMMENT_RULE)) {
                     btnChuyenXuLy.setVisibility(View.VISIBLE);
                 } else {
                     btnChuyenXuLy.setVisibility(View.GONE);
                 }
-
-
             } else {
                 layoutAction.setVisibility(View.GONE);
             }
@@ -320,14 +337,15 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             tv_hinhthucgui.setVisibility(View.GONE);
             tv_hinhthucgui_label.setVisibility(View.GONE);
         }
+
     }
 
     private int idDoc;
 
 
-        @Override
+    @Override
     public void onSuccess(Object object) {
-        if(object instanceof DetailDocumentWaiting){
+        if (object instanceof DetailDocumentWaiting) {
             EventBus.getDefault()
                     .postSticky(new ReloadDocWaitingtEvent(true));
             detailDocumentWaiting = (DetailDocumentWaiting) object;
@@ -336,10 +354,12 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
         }
 
     }
+
     @Override
     public void onComment() {
 
     }
+
     @Override
     public void onError(APIError apiError) {
         if (!isFinishing()) {
@@ -374,28 +394,54 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     @Override
     public void onFinish() {
+        Toast.makeText(this, "Kết thúc văn bản thành công", Toast.LENGTH_LONG).show();
+        EventBus.getDefault().postSticky(new ReloadDocWaitingtEvent(true));
+        finish();
 
     }
 
     @Override
     public void onCheckFinish(boolean isFinish) {
+        if (isFinish) {
+            btnFinish.setVisibility(View.VISIBLE);
+        } else {
+            btnFinish.setVisibility(View.GONE);
+        }
 
     }
 
-    @OnClick({R.id.btnMove, R.id.btnMark})
-    public void onViewClicked(View view){
-            switch (view.getId()){
-                case R.id.btnMove:
-                    ApplicationSharedPreferences applicationSharedPreferences = new ApplicationSharedPreferences(this);
-                    applicationSharedPreferences.setPersonPre(new ListPersonPreEvent(null , null , null));
+    @OnClick({R.id.btnMove, R.id.btnMark, R.id.btnFinish})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btnMove:
+                ApplicationSharedPreferences applicationSharedPreferences = new ApplicationSharedPreferences(this);
+                applicationSharedPreferences.setPersonPre(new ListPersonPreEvent(null, null, null));
+                btnMove = buttonAnchor;
+                changeDocumentPresenter.getTypeChangeDocument(new TypeChangeDocRequest(typeChangeDocumentRequest.getDocId(), typeChangeDocumentRequest.getProcessDefinitionId()));
+                break;
+            case R.id.btnMark:
+                mark();
+                break;
+            case R.id.btnFinish:
+                if (Application.getApp().getAppPrefs().getAccountLogin().isCommentFinish()) {
+                    DialogCommentFinish dialogCommentFinish = new DialogCommentFinish(this);
+                    dialogCommentFinish.show();
 
-                    changeDocumentPresenter.getTypeChangeDocument(new TypeChangeDocRequest(typeChangeDocumentRequest.getDocId(), typeChangeDocumentRequest.getProcessDefinitionId()));
-                    break;
-                case R.id.btnMark:
-                    mark();
-                    break;
-            }
+                } else {
+                    finishDoc(null);
 
+                }
+                break;
+        }
+
+    }
+
+    private void finishDoc(String comment) {
+        if (connectionDetector.isConnectingToInternet()) {
+            documentWaitingPresenter.finish(Integer.parseInt(newItem.getId()), comment);
+        } else {
+            AlertDialogManager.showAlertDialog(this, getString(R.string.NETWORK_TITLE_ERROR), getString(R.string.NO_INTERNET_ERROR), true, AlertDialogManager.ERROR);
+        }
     }
 
     private void mark() {
@@ -424,6 +470,25 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     @Override
     public void onSuccessTypeChange(List<TypeChangeDocument> typeChangeDocumentList) {
+        if (typeChangeDocumentList != null && typeChangeDocumentList.size() > 0) {
+            EventBus.getDefault().postSticky(typeChangeDocumentRequest);
+            List<String> lables = new ArrayList<String>();
+            for (int i = 0; i < typeChangeDocumentList.size(); i++) {
+                lables.add(typeChangeDocumentList.get(i).getName());
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.weight_table_menu, R.id.textViewTableMenuItem, lables);
+            final ListPopupWindow listPopupWindow = new ListPopupWindow(this);
+            listPopupWindow.setAdapter(adapter);
+
+            listPopupWindow.setAnchorView(buttonAnchor);
+            listPopupWindow.setWidth(550);
+            listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
+            listPopupWindow.setHorizontalOffset(-402);
+            listPopupWindow.setVerticalOffset(-20);
+            listPopupWindow.setModal(true);
+
+
+        }
 
     }
 
@@ -450,6 +515,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
         }
 
     }
+
     private void sendExceptionError(APIError apiError) {
         ExceptionRequest exceptionRequest = new ExceptionRequest();
         LoginInfo eventbus = EventBus.getDefault().getStickyEvent(LoginInfo.class);
@@ -466,6 +532,31 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             exceptionRequest.setFunction("");
         }
         exceptionRequest.setException(apiError.getMessage());
+
+    }
+
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(SaveFinishDocumentEvent finishEvent) {
+        if (finishEvent != null && finishEvent.isFinish()) {
+            Toast.makeText(this, getString(R.string.FINISH_SUCCESS), Toast.LENGTH_LONG).show();
+            EventBus.getDefault().postSticky(new ReloadDocWaitingtEvent(true));
+            finish();
+        }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Override
+    public void ItemClickGetTypeChangeButtonDocument(Button button) {
+        buttonAnchor = button;
+        changeDocumentPresenter.getTypeChangeDocumentViewFiles(new TypeChangeDocRequest(typeChangeDocumentRequest.getDocId(), typeChangeDocumentRequest.getProcessDefinitionId()));
+
 
     }
 }

@@ -75,7 +75,14 @@
     <string name="tv_tructiep">Đơn vị/Cá nhân nhận trực tiếp</string>
     <string name="tv_nguoi_nhan_thongbao">Người nhận thông báo</string>
     <string name="tv_ho_ten">Họ tên</string>
+    <string name="FINISH_SUCCESS">Kết thúc Văn bản thành công</string>
+    <string name="str_ERROR_END_DOCUMENT_DIALOG">Lỗi kết thúc văn bản!</string>
+    <string name="str_ERROR_CHECK_DOCUMENT_DIALOG">Lỗi kiểm tra thông tin văn bản!</string>
 
     <string name="tv_xem_db">Xem để biết</string>
     <string name="tv_xin_y_kien">Xin ý kiến: </string>
+
+    <string name="str_huy_bo">Hủy bỏ</string>
+    <string name="str_dong_y">Đồng ý</string>
+    <string name="tv_nhap_noi_dung_ket_thuc">Nhập nội dung kết thúc văn bản</string>
 </resources>

@@ -16,6 +16,15 @@ import retrofit2.Call;
 
 public class ChangeDocumentDao extends BaseDao implements IChangeDocumentDao {
     private IChangeDocumentService changeDocumentService;
+
+    @Override
+    public void onSendGetTypeChangeDocumentViewFilesDao(TypeChangeDocRequest typeChangeDocumentRequest, ICallFinishedListener iCallFinishedListener) {
+        changeDocumentService = BaseService.createService(IChangeDocumentService.class);
+        Call<TypeChangeDocumentRespone> call = changeDocumentService.getTypeChangeViewFiles(typeChangeDocumentRequest);
+        call(call, iCallFinishedListener);
+        EventBus.getDefault().postSticky(new ExceptionCallAPIEvent(String.valueOf(call.request().url())));
+    }
+
     @Override
     public void onSendGetTypeChangeDocumentDao(TypeChangeDocRequest typeChangeDocumentRequest, ICallFinishedListener iCallFinishedListener) {
 

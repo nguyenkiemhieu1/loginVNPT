@@ -8,5 +8,6 @@ public interface IDocumentWaitingDao {
     void onGetDetail(int docId, ICallFinishedListener callFinishedListener);
     void onMarkDocument(int docId, ICallFinishedListener callFinishedListener);
 
+    void onFinish(int id,String comment ,ICallFinishedListener iCallFinishedListener);
     void onRecordsDocumentWaitingDao(DocumentWaitingRequest documentWaitingRequest, HandleSyncService.HandleGetRecords handleGetRecords);
 }

@@ -7,4 +7,6 @@ public class ServiceUrl {
     public static final String CHECK_FINISH_DOC_URL = "api/document/checkfinish/{id}/";
     public static final String GET_LIST_TYPE_CHANGE_DOC_URL = "api/document/getapprovedvalue/";
     public static final String MARK_DOC_URL = "api/document/signeddocument/{id}/";
+    public static final String GET_LIST_TYPE_CHANGE_DOC_VIEW_FILES_URL = "api/document/getapprovedvaluedetailfile/";
+    public static final String FINISH_DOC_URL_V2 = "api/document/finish/v2/";
 }

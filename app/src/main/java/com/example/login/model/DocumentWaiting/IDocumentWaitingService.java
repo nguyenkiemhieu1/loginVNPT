@@ -1,5 +1,7 @@
 package com.example.login.model.DocumentWaiting;
 
+import com.example.login.model.CommentRequest;
+import com.example.login.model.FinishDocumentRespone;
 import com.example.login.model.MarkDocumentRespone;
 import com.example.login.presenter.CheckFinishDocumentRespone;
 import com.example.login.presenter.DetailDocumentWaiting.DetailDocumentWaitingRespone;
@@ -22,4 +24,7 @@ public interface IDocumentWaitingService {
     Call<CheckFinishDocumentRespone> checkFinish(@Path("id") int docId);
     @GET(ServiceUrl.MARK_DOC_URL)
     Call<MarkDocumentRespone> mark(@Path("id") int docId);
+
+    @POST(ServiceUrl.FINISH_DOC_URL_V2)
+    Call<FinishDocumentRespone> finish(@Body CommentRequest commentRequest);
 }
