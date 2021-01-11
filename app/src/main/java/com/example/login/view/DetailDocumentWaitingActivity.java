@@ -152,7 +152,9 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
     private ImageView btnBack;
     private ImageView btnSend;
     private boolean marked;
+    private int idDoc;
     private ConnectionDetector connectionDetector;
+
     DetailDocumentWaiting detailDocumentWaiting;
 
 
@@ -338,8 +340,6 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     }
 
-    private int idDoc;
-
 
     @Override
     public void onSuccess(Object object) {
@@ -413,7 +413,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             case R.id.btnMove:
                 ApplicationSharedPreferences applicationSharedPreferences = new ApplicationSharedPreferences(this);
                 applicationSharedPreferences.setPersonPre(new ListPersonPreEvent(null, null, null));
-                btnMove = buttonAnchor;
+                buttonAnchor = btnMove;
                 changeDocumentPresenter.getTypeChangeDocument(new TypeChangeDocRequest(typeChangeDocumentRequest.getDocId(), typeChangeDocumentRequest.getProcessDefinitionId()));
                 break;
             case R.id.btnMark:
@@ -489,8 +489,6 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             listPopupWindow.setVerticalOffset(-20);
             listPopupWindow.setModal(true);
             listPopupWindow.show();
-
-
         }
 
     }
