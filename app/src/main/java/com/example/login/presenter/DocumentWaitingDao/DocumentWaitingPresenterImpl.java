@@ -26,16 +26,18 @@ public class DocumentWaitingPresenterImpl implements IDocumentWaitingPresenter, 
         this.documentWaitingView = documentWaitingView;
         this.documentWaitingDao = new DocumentWaitingDao();
     }
+
     public DocumentWaitingPresenterImpl(IDetailDocumentWaitingView detailDocumentWaitingView) {
         this.detailDocumentWaitingView = detailDocumentWaitingView;
         this.documentWaitingDao = new DocumentWaitingDao();
     }
 
     @Override
-    public void getRecords(DocumentWaitingRequest documentWaitingRequest) {if (documentWaitingView != null) {
-        documentWaitingView.showProgress();
-        documentWaitingDao.onRecordsDocumentWaitingDao(documentWaitingRequest, this);
-    }
+    public void getRecords(DocumentWaitingRequest documentWaitingRequest) {
+        if (documentWaitingView != null) {
+            documentWaitingView.showProgress();
+            documentWaitingDao.onRecordsDocumentWaitingDao(documentWaitingRequest, this);
+        }
 
     }
 

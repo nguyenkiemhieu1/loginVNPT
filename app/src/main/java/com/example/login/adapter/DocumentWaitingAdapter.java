@@ -45,9 +45,6 @@ public class DocumentWaitingAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public final int TYPE_NEW = 0;
     OnLoadMoreListener loadMoreListener;
     boolean isLoading = false, isMoreDataAvailable = true;
-    private ApplicationSharedPreferences appPrefs;
-
-
 
     public interface OnLoadMoreListener {
         void onLoadMore();

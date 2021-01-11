@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="md_amber_800">#ff8f00</color>
     <color name="md_white">#ffffff</color>
     <color name="md_blue_500">#2196f3</color>
+    <color name="md_green_a400">#00e676</color>
 </resources>

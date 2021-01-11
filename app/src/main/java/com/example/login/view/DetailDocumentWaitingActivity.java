@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +26,12 @@ import com.example.login.configuration.ApplicationSharedPreferences;
 import com.example.login.model.APIError;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentInfo;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentWaiting;
-import com.example.login.model.DetailDocumentWaiting.UnitLogInfo;
 import com.example.login.model.DocumentWaitingInfo;
 import com.example.login.model.FeedBackEvent;
 import com.example.login.model.FinishEvent;
 import com.example.login.model.ListPersonPreEvent;
 import com.example.login.model.LoginInfo;
+import com.example.login.model.SaveDocument.SaveDocumentEvent;
 import com.example.login.model.SaveFinishDocumentEvent;
 import com.example.login.model.TypeChangeDocRequest;
 import com.example.login.model.TypeChangeDocument;
@@ -43,7 +42,6 @@ import com.example.login.presenter.ChangeDocument.IGetTypeChangeDocumentView;
 import com.example.login.presenter.DetailDocumentWaiting.IDetailDocumentWaitingView;
 import com.example.login.presenter.DocumentWaitingDao.DocumentWaitingPresenterImpl;
 import com.example.login.presenter.DocumentWaitingDao.IDocumentWaitingPresenter;
-import com.example.login.presenter.DocumentWaitingDao.IDocumentWaitingView;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ExceptionRequest;
 import com.example.login.presenter.ILoginPresenter;
@@ -376,7 +374,6 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
         }
 
     }
-
     @Override
     public void onMark() {
         if (marked) {
@@ -410,7 +407,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     }
 
-    @OnClick({R.id.btnMove, R.id.btnMark, R.id.btnFinish})
+    @OnClick({R.id.btnMove, R.id.btnMark, R.id.btnFinish, R.id.btnSave})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnMove:
@@ -432,6 +429,11 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
                 }
                 break;
+//            case R.id.btnSave:
+//                EventBus.getDefault().postSticky(new SaveDocumentEvent(idDoc));
+//                startActivity(new Intent(this, SaveDocumentActivity.class));
+//                break;
+
         }
 
     }
@@ -486,6 +488,7 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             listPopupWindow.setHorizontalOffset(-402);
             listPopupWindow.setVerticalOffset(-20);
             listPopupWindow.setModal(true);
+            listPopupWindow.show();
 
 
         }
@@ -535,7 +538,20 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
 
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedBackEvent event) {
+        if (event.getFeedBack() != null)
+            finishDoc(event.getFeedBack());
+        EventBus.getDefault().removeStickyEvent(FeedBackEvent.class);
+    }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(FinishEvent finishEvent) {
+        if (finishEvent != null && finishEvent.getType() == 0 && finishEvent.isFinish()) {
+            EventBus.getDefault().removeStickyEvent(FinishEvent.class);
+            finish();
+        }
+    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(SaveFinishDocumentEvent finishEvent) {

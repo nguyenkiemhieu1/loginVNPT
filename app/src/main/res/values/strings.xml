@@ -71,6 +71,12 @@
     <string name="tv_ho_ten_dv">Họ tên/Đơn vị</string>
     <string name="tv_DonVi">Đơn vị</string>
     <string name="tv_donggui">Đồng gửi</string>
+    <string name="tv_khong_dulieu">Không có dữ liệu</string>
+    <string name="btn_luu_va_ketthuc">Lưu và kết thúc</string>
+    <string name="tv_cho_ykien">Cho ý kiến</string>
+    <string name="str_button_quaylai"> Quay lại</string>
+    <string name="tv_luu">Lưu</string>
+<!--    <string name="str_ERROR_DIALOG">Có lỗi xảy ra!\nVui lòng thử lại sau!</string>-->
     <string name="tv_gui">Gửi</string>
     <string name="tv_tructiep">Đơn vị/Cá nhân nhận trực tiếp</string>
     <string name="tv_nguoi_nhan_thongbao">Người nhận thông báo</string>
@@ -78,6 +84,9 @@
     <string name="FINISH_SUCCESS">Kết thúc Văn bản thành công</string>
     <string name="str_ERROR_END_DOCUMENT_DIALOG">Lỗi kết thúc văn bản!</string>
     <string name="str_ERROR_CHECK_DOCUMENT_DIALOG">Lỗi kiểm tra thông tin văn bản!</string>
+    <string name="tv_chon_hoso">Chọn hồ sơ</string>
+    <string name="NOT_PERSON_SAVE">Chưa chọn đơn vị/cá nhân lưu hồ sơ!</string>
+
 
     <string name="tv_xem_db">Xem để biết</string>
     <string name="tv_xin_y_kien">Xin ý kiến: </string>

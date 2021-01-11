@@ -9,4 +9,8 @@ public class ServiceUrl {
     public static final String MARK_DOC_URL = "api/document/signeddocument/{id}/";
     public static final String GET_LIST_TYPE_CHANGE_DOC_VIEW_FILES_URL = "api/document/getapprovedvaluedetailfile/";
     public static final String FINISH_DOC_URL_V2 = "api/document/finish/v2/";
+
+    public static final String GET_DOCUMENT_SAVED = "api/brief/getlistbrief/";
+    public static final String EXCEPTION_URL = "api/createexception/";
+    public static final String POST_DOCUMENT_SAVED = "api/brief/savebrief/";
 }
