@@ -3,6 +3,7 @@ package com.example.login.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,13 +30,19 @@ import com.example.login.model.DetailDocumentWaiting.DetailDocumentWaiting;
 import com.example.login.model.DocumentWaitingInfo;
 import com.example.login.model.FeedBackEvent;
 import com.example.login.model.FinishEvent;
+import com.example.login.model.ListPersonEvent;
 import com.example.login.model.ListPersonPreEvent;
+import com.example.login.model.ListProcessRequest;
 import com.example.login.model.LoginInfo;
 import com.example.login.model.SaveDocument.SaveDocumentEvent;
 import com.example.login.model.SaveFinishDocumentEvent;
+import com.example.login.model.TaiFileNewSendEvent;
 import com.example.login.model.TypeChangeDocRequest;
 import com.example.login.model.TypeChangeDocument;
 import com.example.login.model.TypeChangeDocumentRequest;
+import com.example.login.model.TypeChangeEvent;
+import com.example.login.model.TypePersonEvent;
+import com.example.login.model.TypeTuDongGiaoViecEvent;
 import com.example.login.presenter.ChangeDocument.ChangeDocumentPresenterImpl;
 import com.example.login.presenter.ChangeDocument.IChangeDocumentPresenter;
 import com.example.login.presenter.ChangeDocument.IGetTypeChangeDocumentView;
@@ -487,9 +494,70 @@ public class DetailDocumentWaitingActivity extends BaseActivity implements ILogi
             listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
             listPopupWindow.setHorizontalOffset(-402);
             listPopupWindow.setVerticalOffset(-20);
+            listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    ListPersonEvent listPersonEvent = EventBus.getDefault().getStickyEvent(ListPersonEvent.class);
+                    if(listPersonEvent == null){
+                        listPersonEvent = new ListPersonEvent(null, null, null, null, null, null);
+
+                    }
+                    int type = typeChangeDocumentList.get(i).getType();
+                    if(typeChangeDocumentList.get(i).getUploadFile() != null){
+                        EventBus.getDefault().postSticky(new TaiFileNewSendEvent(typeChangeDocumentList.get(i).getUploadFile()));
+                    }
+                    if (type == Constants.TYPE_SEND_NOTIFY || type == Constants.TYPE_SEND_PROCESS) {
+                        if (type == Constants.TYPE_SEND_PROCESS) {
+                            EventBus.getDefault().postSticky(new TypePersonEvent(Constants.TYPE_SEND_PERSON_PROCESS));
+
+                            EventBus.getDefault().postSticky(new TypeTuDongGiaoViecEvent(Constants.TYPE_SEND_PERSON_PROCESS));
+                            listPersonEvent.setPersonNotifyList(null);
+                            listPersonEvent.setPersonSendList(null);
+                            listPersonEvent.setPersonDirectList(null);
+                        }
+                    }
+                    else {
+                        if (typeChangeDocumentList.get(i).getNextStep().equals("get_cleck_publish")
+                                && (typeChangeDocumentRequest.getType().equals(Constants.DOCUMENT_RECEIVE) ||
+                                typeChangeDocumentRequest.getType().equals(Constants.DOCUMENT_SEND))) {
+                            EventBus.getDefault().postSticky(new TypePersonEvent(Constants.TYPE_PERSON_DIRECT));
+                            //event hien thi tu dong giao viec
+                            EventBus.getDefault().postSticky(new TypeTuDongGiaoViecEvent(Constants.TYPE_PERSON_DIRECT));
+                            listPersonEvent.setPersonNotifyList(null);
+                            listPersonEvent.setPersonProcessList(null);
+                            listPersonEvent.setPersonSendList(null);
+                        } else {
+                            EventBus.getDefault().postSticky(new TypePersonEvent(Constants.TYPE_PERSON_PROCESS));
+                            EventBus.getDefault().postSticky(new TypeChangeEvent("", i, typeChangeDocumentList));
+                            EventBus.getDefault().postSticky(new ListProcessRequest(typeChangeDocumentList.get(i).getNextStep(),
+                                    typeChangeDocumentList.get(i).getRoleId(), typeChangeDocumentList.get(i).getApprovedValue(),
+                                    typeChangeDocumentRequest.getDocId(), ""));
+                            listPersonEvent.setPersonNotifyList(null);
+                            listPersonEvent.setPersonDirectList(null);
+                            listPersonEvent.setPersonLienThongList(null);
+                        }
+                    }
+                    EventBus.getDefault().postSticky(listPersonEvent);
+                    EventBus.getDefault().postSticky(new TypeChangeEvent("", i, typeChangeDocumentList));
+                    listPersonEvent = EventBus.getDefault().getStickyEvent(ListPersonEvent.class);
+                    ApplicationSharedPreferences applicationSharedPreferences = new ApplicationSharedPreferences(DetailDocumentWaitingActivity.this);
+                    ListPersonPreEvent listPersonPreEvent = applicationSharedPreferences.getPersonPre();
+                    listPersonPreEvent.setPersonProcessPreList(listPersonEvent.getPersonProcessList());
+                    listPersonPreEvent.setPersonSendPreList(listPersonEvent.getPersonSendList());
+                    listPersonPreEvent.setPersonNotifyPreList(listPersonEvent.getPersonNotifyList());
+                    Application.getApp().getAppPrefs().setPersonPre(listPersonPreEvent);
+                    EventBus.getDefault().postSticky(new FinishEvent(0, true));
+                    Toast.makeText(DetailDocumentWaitingActivity.this, "abc" + type, Toast.LENGTH_LONG).show();
+//                    startActivity(new Intent(DetailDocumentWaitingActivity.this, SelectPersonActivityNewConvert.class).putExtra("DOCID", detailDocumentWaiting.getId()));
+                    listPopupWindow.dismiss();
+
+                }
+            });
+
             listPopupWindow.setModal(true);
             listPopupWindow.show();
         }
+
 
     }
 

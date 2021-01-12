@@ -17,4 +17,12 @@ public class Constants {
     public static final String COMMENT_RULE = "true";
     public static final String MARKED_SUCCESS = "true";
     public static final String IS_FINISH = "true";
+    public static final int TYPE_SEND_NOTIFY = 6;
+    public static final int TYPE_SEND_PROCESS = 5;
+    public static final String DOCUMENT_SEND = "2";
+    public static final String TYPE_SEND_PERSON_PROCESS = "TYPE_SEND_PROCESS";
+    public static final String DOCUMENT_RECEIVE = "1";
+
+    public static final String TYPE_PERSON_DIRECT = "TYPE_PERSON_DIRECT";
+    public static final String TYPE_PERSON_PROCESS = "TYPE_PERSON_PROCESS";
 }

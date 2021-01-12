@@ -117,9 +117,9 @@ public class ApplicationSharedPreferences {
     public LoginInfo getAccountLogin() {
         return tinyDB.getObject(OBJECT_TOKEN_LOGIN, LoginInfo.class);
     }
-//    public ListPersonPreEvent getPersonPre() {
-//        return tinyDB.getObject(SEND_DOC_PERSON_PRE, ListPersonPreEvent.class);
-//    }
+    public ListPersonPreEvent getPersonPre() {
+        return tinyDB.getObject(SEND_DOC_PERSON_PRE, ListPersonPreEvent.class);
+    }
 
     public void setFirebaseToken(String firebaseToken) {
         tinyDB.putString(FIREBASE_TOKEN, firebaseToken);
