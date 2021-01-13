@@ -1,2 +1,3 @@
+include ':treeview_lib'
 include ':app'
 rootProject.name = "Login"
