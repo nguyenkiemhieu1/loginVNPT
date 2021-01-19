@@ -574,6 +574,16 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
     public boolean isRunning() {
         return false;
     }
+    public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder,
+                                             @NonNull List<Object> payloads) {
+        return !payloads.isEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads);
+    }
+
+    void dispatchFinishedWhenDone() {
+        if (!isRunning()) {
+            dispatchAnimationsFinished();
+        }
+    }
 
     private static class VpaListenerAdapter implements ViewPropertyAnimatorListener {
         VpaListenerAdapter() {
@@ -592,14 +602,5 @@ public class DefaultItemAnimator extends SimpleItemAnimator {
         }
     }
 
-    public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder,
-                                             @NonNull List<Object> payloads) {
-        return !payloads.isEmpty() || super.canReuseUpdatedViewHolder(viewHolder, payloads);
-    }
 
-    void dispatchFinishedWhenDone() {
-        if (!isRunning()) {
-            dispatchAnimationsFinished();
-        }
-    }
 }

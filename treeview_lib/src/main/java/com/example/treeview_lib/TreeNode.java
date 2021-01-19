@@ -83,6 +83,9 @@ public class TreeNode {
         }
         return children;
     }
+    public boolean hasChild() {
+        return children.size() > 0;
+    }
 
     public void setChildren(List<TreeNode> children) {
         this.children = children;
