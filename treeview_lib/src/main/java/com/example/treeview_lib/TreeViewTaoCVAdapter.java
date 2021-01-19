@@ -323,6 +323,13 @@ public class TreeViewTaoCVAdapter extends RecyclerView.Adapter {
         selectParentIfNeed(treeNode, checked);
     }
 
+    public void setTypeXLC(int typeXLC) {
+        this.typeXLC = typeXLC;
+    }
+
+    public int positiveXLC() {
+        return positiveFromList;
+    }
     private void selectParentIfNeed(TreeNode treeNode, boolean checked) {
         List<TreeNode> impactedParents = TreeHelper.selectParentIfNeedWhenNodeSelected(treeNode, checked);
         if (impactedParents.size() > 0) {
@@ -450,6 +457,24 @@ public class TreeViewTaoCVAdapter extends RecyclerView.Adapter {
             notifyItemChanged(index);
         }
     }
+    public void deleteNode(TreeNode node) {
+        if (node == null || node.getParent() == null) {
+            return;
+        }
+        List<TreeNode> allNodes = TreeHelper.getAllNodes(root);
+        if (allNodes.indexOf(node) != -1) {
+            node.getParent().removeChild(node);
+        }
+
+        //remove children form list before delete
+        collapseNode(node);
+
+        int index = expandedNodeList.indexOf(node);
+        if (index != -1) {
+            expandedNodeList.remove(node);
+        }
+        notifyItemRemoved(index);
+    }
 
     @Override
     public int getItemCount() {
@@ -460,6 +485,11 @@ public class TreeViewTaoCVAdapter extends RecyclerView.Adapter {
         buildExpandedNodeList();
         notifyDataSetChanged();
     }
+
+    public void updatePositiveXLC(TreeNode treeNode) {
+        positiveFromList = getPositiveXLC(treeNode);
+    }
+
     public void setTreeView(TreeViewTaoCV treeView) {
         this.treeView = treeView;
     }

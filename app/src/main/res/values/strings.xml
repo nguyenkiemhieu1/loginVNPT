@@ -59,6 +59,8 @@
     <string name="str_huy_danhgiau">Hủy đánh dấu</string>
     <string name="str_danhgiau">Đánh dấu</string>
 
+    <string name="SELECT_PERSON">Chọn người nhận văn bản</string>
+
 
 
     <string name="tv_xuly">Xử lý</string>
@@ -90,8 +92,22 @@
 
     <string name="tv_xem_db">Xem để biết</string>
     <string name="tv_xin_y_kien">Xin ý kiến: </string>
+    <string name="tv_thugon">Thu gọn</string>
+    <string name="tv_giu_3s">Ấn giữ 3s để chọn chuyển đồng thời</string>
+    <string name="tv_nhan_chon">Nhấn vào để chọn đơn vị liên thông nội bộ</string>
+    <string name="tv_nhan_chon_nguoinhan"> Nhấn vào để chọn người nhận</string>
+    <string name="tv_chon_lienthong">Nhấn vào để chọn đơn vị liên thông nội bộ</string>
+    <string name="tv_vuilong_doi">Vui lòng đợi trong giây lát...</string>00
 
     <string name="str_huy_bo">Hủy bỏ</string>
     <string name="str_dong_y">Đồng ý</string>
     <string name="tv_nhap_noi_dung_ket_thuc">Nhập nội dung kết thúc văn bản</string>
+
+
+    <string name="tv_chon_theonhom">Chọn theo nhóm đơn vị</string>
+    <string name="tv_chon_theonhom_canhan">Chọn theo nhóm cá nhân</string>
+
+    <string name="POSITION_ACCOUNT">Chức vụ</string>
+    <string name="UNIT_ACCOUNT">Đơn vị</string>
+    <string name="SEARCH_LABEL_BTN">Tìm kiếm</string>
 </resources>
