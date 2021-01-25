@@ -1,7 +1,7 @@
 package com.example.login.presenter;
 
-import com.example.login.model.LoginRequest;
-import com.example.login.model.LoginRespone;
+import com.example.login.model.Login.LoginRequest;
+import com.example.login.model.Login.LoginRespone;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

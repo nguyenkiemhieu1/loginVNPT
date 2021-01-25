@@ -1,12 +1,8 @@
 package com.example.login.view;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,8 +19,8 @@ import com.example.login.configuration.Application;
 import com.example.login.configuration.ApplicationSharedPreferences;
 import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
-import com.example.login.model.DocumentWaitingInfo;
-import com.example.login.model.LoginInfo;
+import com.example.login.model.DocumentWaiting.DocumentWaitingInfo;
+import com.example.login.model.Login.LoginInfo;
 import com.example.login.presenter.DocumentWaitingDao.DocumentWaitingPresenterImpl;
 import com.example.login.presenter.DocumentWaitingDao.IDocumentWaitingPresenter;
 import com.example.login.presenter.DocumentWaitingDao.IDocumentWaitingView;

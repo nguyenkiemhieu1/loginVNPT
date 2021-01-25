@@ -1,21 +1,15 @@
 package com.example.login.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,8 +23,8 @@ import com.example.login.configuration.AlertDialogManager;
 import com.example.login.configuration.Application;
 import com.example.login.configuration.ApplicationSharedPreferences;
 import com.example.login.model.APIError;
-import com.example.login.model.LoginInfo;
-import com.example.login.model.LoginRequest;
+import com.example.login.model.Login.LoginInfo;
+import com.example.login.model.Login.LoginRequest;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ExceptionRequest;
 import com.example.login.presenter.ILoginPresenter;

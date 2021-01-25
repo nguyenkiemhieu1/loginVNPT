@@ -2,8 +2,8 @@ package com.example.login.presenter.loginDao;
 
 import com.example.login.model.BaseDao;
 import com.example.login.model.BaseService;
-import com.example.login.model.LoginRequest;
-import com.example.login.model.LoginRespone;
+import com.example.login.model.Login.LoginRequest;
+import com.example.login.model.Login.LoginRespone;
 import com.example.login.presenter.ExceptionCallAPIEvent;
 import com.example.login.presenter.ICallFinishedListener;
 import com.example.login.presenter.ILoginService;

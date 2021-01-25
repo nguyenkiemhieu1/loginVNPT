@@ -22,7 +22,11 @@ public class Constants {
     public static final String DOCUMENT_SEND = "2";
     public static final String TYPE_SEND_PERSON_PROCESS = "TYPE_SEND_PROCESS";
     public static final String DOCUMENT_RECEIVE = "1";
+    public static final String TYPE_SEND_PROCESS_REQUEST = "1";
 
     public static final String TYPE_PERSON_DIRECT = "TYPE_PERSON_DIRECT";
     public static final String TYPE_PERSON_PROCESS = "TYPE_PERSON_PROCESS";
+    public static final String TYPE_PERSON_SEND = "TYPE_PERSON_SEND";
+    public static final String TYPE_PERSON_NOTIFY = "TYPE_PERSON_NOTIFY";
+    public static final String TYPE_SEND_VIEW = "TYPE_SEND_VIEW";
 }

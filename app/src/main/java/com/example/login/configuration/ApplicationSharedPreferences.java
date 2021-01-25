@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.login.model.ListPersonPreEvent;
-import com.example.login.model.LoginInfo;
-import com.example.login.model.LoginRequest;
+import com.example.login.model.Login.LoginInfo;
+import com.example.login.model.Login.LoginRequest;
 
 import java.util.HashSet;
 

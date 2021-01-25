@@ -1,4 +1,4 @@
-package com.example.login.model;
+package com.example.login.model.DocumentWaiting;
 
 import com.google.gson.annotations.SerializedName;
 

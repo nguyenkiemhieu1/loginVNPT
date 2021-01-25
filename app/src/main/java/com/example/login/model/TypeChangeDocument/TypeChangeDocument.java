@@ -1,4 +1,4 @@
-package com.example.login.model;
+package com.example.login.model.TypeChangeDocument;
 
 import com.google.gson.annotations.SerializedName;
 

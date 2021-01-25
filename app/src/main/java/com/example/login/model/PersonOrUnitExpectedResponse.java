@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 
-public class LoginRespone extends StatusRespone {
+public class PersonOrUnitExpectedResponse extends StatusRespone {
     @SerializedName("data")
     @Setter
     @Getter

@@ -1,7 +1,7 @@
 package com.example.login.presenter.ChangeDocument;
 
 import com.example.login.model.APIError;
-import com.example.login.model.TypeChangeDocument;
+import com.example.login.model.TypeChangeDocument.TypeChangeDocument;
 
 import java.util.List;
 

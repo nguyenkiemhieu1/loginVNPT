@@ -27,19 +27,20 @@ import com.example.login.configuration.ApplicationSharedPreferences;
 import com.example.login.model.APIError;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentInfo;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentWaiting;
-import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.DocumentWaiting.DocumentWaitingInfo;
 import com.example.login.model.FeedBackEvent;
 import com.example.login.model.FinishEvent;
 import com.example.login.model.ListPersonEvent;
 import com.example.login.model.ListPersonPreEvent;
 import com.example.login.model.ListProcessRequest;
-import com.example.login.model.LoginInfo;
-import com.example.login.model.SaveDocument.SaveDocumentEvent;
+import com.example.login.model.Login.LoginInfo;
 import com.example.login.model.SaveFinishDocumentEvent;
 import com.example.login.model.TaiFileNewSendEvent;
-import com.example.login.model.TypeChangeDocRequest;
-import com.example.login.model.TypeChangeDocument;
-import com.example.login.model.TypeChangeDocumentRequest;
+
+import com.example.login.model.TypeChangeDocument.TypeChangeDocRequest;
+import com.example.login.model.TypeChangeDocument.TypeChangeDocument;
+
+import com.example.login.model.TypeChangeDocument.TypeChangeDocumentRequest;
 import com.example.login.model.TypeChangeEvent;
 import com.example.login.model.TypePersonEvent;
 import com.example.login.model.TypeTuDongGiaoViecEvent;

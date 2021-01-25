@@ -1,7 +1,7 @@
 package com.example.login.presenter.loginView;
 
 import com.example.login.model.APIError;
-import com.example.login.model.LoginInfo;
+import com.example.login.model.Login.LoginInfo;
 
 public interface ILoginView {
     void onSuccessLogin(LoginInfo loginInfo);

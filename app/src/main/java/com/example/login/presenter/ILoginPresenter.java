@@ -1,6 +1,6 @@
 package com.example.login.presenter;
 
-import com.example.login.model.LoginRequest;
+import com.example.login.model.Login.LoginRequest;
 
 public interface ILoginPresenter {
     void getUserLoginPresenter(LoginRequest loginRequest);

@@ -6,7 +6,7 @@ import com.example.login.common.ConvertUtils;
 import com.example.login.model.APIError;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRequest;
 import com.example.login.model.DocumentWaiting.DocumentWaitingRespone;
-import com.example.login.model.DocumentWaitingInfo;
+import com.example.login.model.DocumentWaiting.DocumentWaitingInfo;
 import com.example.login.model.FinishDocumentRespone;
 import com.example.login.model.MarkDocumentRespone;
 import com.example.login.presenter.CheckFinishDocumentRespone;

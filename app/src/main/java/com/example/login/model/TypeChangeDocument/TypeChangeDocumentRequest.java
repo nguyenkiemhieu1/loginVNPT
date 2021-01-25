@@ -1,13 +1,15 @@
-package com.example.login.model;
+package com.example.login.model.TypeChangeDocument;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
-public class TypeChangeDocRequest {
+public class TypeChangeDocumentRequest implements Serializable {
     @SerializedName("docId")
     @Setter
     @Getter
@@ -15,4 +17,7 @@ public class TypeChangeDocRequest {
     @SerializedName("processDefinitionId")
     @Setter @Getter
     private String processDefinitionId;
+    @SerializedName("type")
+    @Setter @Getter
+    private String type;
 }

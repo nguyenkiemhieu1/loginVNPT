@@ -4,9 +4,9 @@ import com.example.login.R;
 import com.example.login.common.Constants;
 import com.example.login.common.ConvertUtils;
 import com.example.login.model.APIError;
-import com.example.login.model.LoginInfo;
-import com.example.login.model.LoginRequest;
-import com.example.login.model.LoginRespone;
+import com.example.login.model.Login.LoginInfo;
+import com.example.login.model.Login.LoginRequest;
+import com.example.login.model.Login.LoginRespone;
 import com.example.login.presenter.loginDao.LoginDao;
 import com.example.login.presenter.loginView.ILoginView;
 

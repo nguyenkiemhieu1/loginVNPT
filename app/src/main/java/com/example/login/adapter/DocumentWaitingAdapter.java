@@ -14,21 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login.R;
-import com.example.login.common.ConnectionDetector;
 import com.example.login.common.Constants;
-import com.example.login.configuration.Application;
-import com.example.login.configuration.ApplicationSharedPreferences;
-import com.example.login.model.APIError;
 import com.example.login.model.DetailDocumentWaiting.DetailDocumentInfo;
-import com.example.login.model.DocumentWaitingInfo;
-import com.example.login.model.LoginInfo;
-import com.example.login.model.TypeChangeDocumentRequest;
-import com.example.login.presenter.DocumentWaitingDao.DocumentWaitingDao;
-import com.example.login.presenter.ExceptionCallAPIEvent;
-import com.example.login.presenter.ExceptionRequest;
-import com.example.login.presenter.ICallFinishedListener;
-import com.example.login.presenter.IExceptionErrorView;
-import com.example.login.presenter.loginDao.LoginDao;
+import com.example.login.model.DocumentWaiting.DocumentWaitingInfo;
+
+
+import com.example.login.model.TypeChangeDocument.TypeChangeDocumentRequest;
 import com.example.login.view.DetailDocumentWaitingActivity;
 
 import org.greenrobot.eventbus.EventBus;

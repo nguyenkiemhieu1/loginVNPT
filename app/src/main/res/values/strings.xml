@@ -97,7 +97,9 @@
     <string name="tv_nhan_chon">Nhấn vào để chọn đơn vị liên thông nội bộ</string>
     <string name="tv_nhan_chon_nguoinhan"> Nhấn vào để chọn người nhận</string>
     <string name="tv_chon_lienthong">Nhấn vào để chọn đơn vị liên thông nội bộ</string>
-    <string name="tv_vuilong_doi">Vui lòng đợi trong giây lát...</string>00
+    <string name="tv_vuilong_doi">Vui lòng đợi trong giây lát...</string>
+    <string name="NOT_PERSON_PROCESS">Chưa chọn người nhận xử lý chính</string>
+    <string name="NOT_PERSON">Chưa chọn đơn vị/cá nhân nhận văn bản</string>
 
     <string name="str_huy_bo">Hủy bỏ</string>
     <string name="str_dong_y">Đồng ý</string>
@@ -110,4 +112,11 @@
     <string name="POSITION_ACCOUNT">Chức vụ</string>
     <string name="UNIT_ACCOUNT">Đơn vị</string>
     <string name="SEARCH_LABEL_BTN">Tìm kiếm</string>
+
+    <string name="str_chuachon_xlc">Giao việc cần phải chọn vào cá nhân/đơn vị nhận có vai trò XLC</string>
+    <string name="text_sucssess_create_work_new">Tạo công việc mới thành công</string>
+    <string name="text_title_create_work_new">Tạo công việc mới</string>
+    <string name="check_create_work_new">Cần nhập hạn xử lý công việc trước khi chọn đơn vị/cá nhân.</string>
+    <string name="tv_chon">Chọn</string>
+    <string name="SELECT_JOB_POSSITION">---Chọn chức danh---</string>
 </resources>

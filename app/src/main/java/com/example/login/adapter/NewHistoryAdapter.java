@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.login.R;
 import com.example.login.common.ConvertUtils;
 import com.example.login.model.DetailDocumentWaiting.UnitLogInfo;
-import com.example.login.model.LogInfo;
+import com.example.login.model.Login.LogInfo;
 
 import java.util.ArrayList;
 import java.util.List;

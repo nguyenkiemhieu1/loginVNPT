@@ -1,5 +1,7 @@
 package com.example.login.model;
 
+import com.example.login.model.TypeChangeDocument.TypeChangeDocument;
+
 import java.util.List;
 
 import lombok.AllArgsConstructor;
